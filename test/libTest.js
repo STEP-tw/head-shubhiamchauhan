@@ -1,18 +1,20 @@
 const assert = require('assert');
-const { getHead, extractHeadArgs } = require('../src/headLib.js');
+const { applyFunc,
+  extractHeadArgs,
+  extractContents} = require('../src/headLib.js');
 
 const getString = function(string){
   return string;
 };
 
-describe('getHead', function() {
+describe('applyFunc', function() {
   let string;
   beforeEach('',function(){
-    string = "The coins entered circulation\nAfter legal maneuvering\nthe government\nThe coins were\nCongress called in the coins\nAfter legal maneuvering\nthe government\nThe coins were\nCongress called in the coins\nThe coins were\nCongress called in the coins\nreplacing them with US currency";
+    string = "The coins entered circulation\nAfter legal maneuvering\nthe government\nThe coins were\nCongress called in the coins";
   });
 
   it('should return the same string which is given as input', function() {
-    assert.deepEqual(getHead(getString,{file:[string]}),string);
+    assert.deepEqual(applyFunc(getString,[string]),[string]);
   });
 });
 
@@ -48,5 +50,11 @@ describe("extractHeadArgs", function() {
       let result = { files: [ 'file1', 'file2', 'file3' ], n: '10' }; 
       assert.deepEqual(extractHeadArgs(array), result);
     });
+  });
+});
+
+describe("extractContents", function() {
+  it("should return an empty string", function() {
+    assert.deepEqual(extractContents(0, "", "fhdgs"), "");
   });
 });
