@@ -1,6 +1,7 @@
 const assert = require('assert');
 const { applyFunc,
   extractHeadArgs,
+  extractLines,
   extractContents} = require('../src/headLib.js');
 
 const getString = function(string){
@@ -54,7 +55,35 @@ describe("extractHeadArgs", function() {
 });
 
 describe("extractContents", function() {
-  it("should return an empty string", function() {
-    assert.deepEqual(extractContents(0, "", "fhdgs"), "");
+  it("should return \'\' for inputs 0, \"\" and \"shubham\"", function() {
+    assert.deepEqual(extractContents(0, "", "shubham"), "");
+  });
+  it("should return \'shu\' for inputs 3, \"\" and \"shubham\"", function() {
+    assert.deepEqual(extractContents(3, "", "shubham"), "shu");
   });
 });
+
+describe("extractLines", function() {
+  let string1;
+  let string2;
+  let fileName;
+  beforeEach('',function(){
+    fileName = ["file1","file2"];
+    string1 = "The coins entered circulation\nAfter legal maneuvering\nthe government\nThe coins were\nCongress called in the coins";
+    string2 = "The coins were\nCongress called in the coins";
+  });
+
+  it("should return \'\' for inputs numberOfLine = 0", function() {
+    assert.deepEqual(extractLines(fileName, [string1], 0), "");
+  });
+
+  it("should return 2 lines of both files string1 and string2 for inputs numberOfLine = 2", function() {
+    let result = "==> " + "file1" + " <==" + "\n";
+    result += "The coins entered circulation\nAfter legal maneuvering";
+    result += "\n\n";
+    result += "==> " + "file2" + " <==" + "\n";
+    result += string2;
+    assert.deepEqual(extractLines(fileName, [string1, string2], 2), result);
+  });
+});
+

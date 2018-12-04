@@ -1,8 +1,8 @@
-const {readFileSync} = require('fs');
 const extractContents = function(numberOfContents, delimeter, file) {
   let contents = file.split(delimeter);
   return contents.slice(0,numberOfContents).join(delimeter);
 }
+
 
 const apply = function(fnReferance, file) {
   return fnReferance(file, "utf8");
@@ -11,6 +11,24 @@ const apply = function(fnReferance, file) {
 const applyFunc = function(fnReferance, files) {
  let result = apply.bind(null, fnReferance);
   return files.map(result);
+}
+
+const putHeader = function(filesName, fileContent) {
+  let contentWithLabel = []
+  for(let index = 0; index < filesName.length; index++) {
+    let tag = "==> " + filesName[index] + " <==";
+    contentWithLabel[index] = tag + '\n' + fileContent[index];
+  }
+  return contentWithLabel;
+}
+
+const extractLines = function(files, listOfLines, numberOfLines) {
+  let getLines = extractContents.bind(null, numberOfLines, "\n");
+  let lines = listOfLines.map(getLines);
+  if( lines.length < 2) {
+    return lines.join('');
+  }
+  return putHeader(files, lines).join('\n\n');
 }
 
 const extractHeadOption = function(args) {
@@ -43,3 +61,4 @@ const extractHeadArgs = function(args) {
 exports.applyFunc = applyFunc;
 exports.extractHeadArgs = extractHeadArgs;
 exports.extractContents = extractContents;
+exports.extractLines = extractLines;
