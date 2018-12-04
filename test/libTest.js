@@ -1,6 +1,7 @@
 const assert = require('assert');
 const { applyFunc,
   extractHeadArgs,
+  getHead,
   extractLines,
   extractContents} = require('../src/headLib.js');
 
@@ -87,3 +88,28 @@ describe("extractLines", function() {
   });
 });
 
+describe("getHead", function() {
+  let string1;
+  let string2;
+  let fileName;
+  beforeEach('',function(){
+    fileName = ["string1","string2"];
+    string1 = "string1";
+    string2 = "string2";
+  });
+
+  it("should return \'\' for inputs n = 0", function() {
+    let input = { n:0, files:[string1]};
+    assert.deepEqual(getHead(getString, input), "");
+  });
+
+  it("should return 2 lines of both files string1 and string2 for inputs n = 1", function() {
+    let result = "==> " + "string1" + " <==" + "\n";
+    result += string1;
+    result += "\n\n";
+    result += "==> " + "string2" + " <==" + "\n";
+    result += string2;
+    let input = { n:2, files:[string1, string2]};
+    assert.deepEqual(getHead(getString, input), result);
+  });
+});

@@ -48,6 +48,15 @@ const extractHeadOption = function(args) {
   return result;
 }
 
+const getHead = function(fnReferance, inputData) {
+  let option = Object.keys(inputData)[0];
+  let files = inputData.files;
+  let head = {};
+  head["n"] = extractLines;
+  let result = applyFunc(fnReferance, files);
+  return head[option](files, result, +inputData[option]);
+}
+
 const extractHeadArgs = function(args) {
   let userArgs = args.slice(2);
   let extractOption = extractHeadOption(userArgs);
@@ -62,3 +71,4 @@ exports.applyFunc = applyFunc;
 exports.extractHeadArgs = extractHeadArgs;
 exports.extractContents = extractContents;
 exports.extractLines = extractLines;
+exports.getHead = getHead;
