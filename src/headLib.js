@@ -3,18 +3,20 @@ const extractContents = function(numberOfContents, delimeter, file) {
   return contents.slice(0,numberOfContents).join(delimeter);
 }
 
-
 const apply = function(fnReferance, file) {
   return fnReferance(file, "utf8");
 }
 
 const applyFunc = function(fnReferance, files) {
- let result = apply.bind(null, fnReferance);
+  let result = apply.bind(null, fnReferance);
   return files.map(result);
 }
 
 const putHeader = function(filesName, fileContent) {
   let contentWithLabel = []
+  if( fileContent.length < 2) {
+    return fileContent;
+  }
   for(let index = 0; index < filesName.length; index++) {
     let tag = "==> " + filesName[index] + " <==";
     contentWithLabel[index] = tag + '\n' + fileContent[index];
@@ -25,27 +27,17 @@ const putHeader = function(filesName, fileContent) {
 const extractLines = function(files, listOfLines, numberOfLines) {
   let getLines = extractContents.bind(null, numberOfLines, "\n");
   let lines = listOfLines.map(getLines);
-  if( lines.length < 2) {
-    return lines.join('');
-  }
   return putHeader(files, lines).join('\n\n');
 }
 
-const extractHeadOption = function(args) {
-  let option = args[0].split('');
-  let result = [{files:[]}];
+const subString = function(numberOfCharacters, string) {
+  return string.substring(0, numberOfCharacters);
+}
 
-  if(option[0] == "-" && !(+option[1])) {
-    result[0][option[1]] = option.slice(2).join('') || args[1];
-    option[2] || args.splice(0,1);
-    args = args.slice(1);
-    result.push(args);
-    return result;
-  }
-
-  result[0]["n"] = +option.slice(1).join('') || 10;
-  result.push(args);
-  return result;
+const extractCharacters = function(fileName, listOfCharacters, numberOfBytes) {
+  let getCharacter = subString.bind(null, numberOfBytes);
+  let characters = listOfCharacters.map(getCharacter);
+  return putHeader(fileName, characters).join('\n');
 }
 
 const getHead = function(fnReferance, inputData) {
@@ -53,18 +45,36 @@ const getHead = function(fnReferance, inputData) {
   let files = inputData.files;
   let head = {};
   head["n"] = extractLines;
-  let result = applyFunc(fnReferance, files);
-  return head[option](files, result, +inputData[option]);
+  head["c"] = extractCharacters;
+  let fileContents = applyFunc(fnReferance, files);
+  return head[option](files, fileContents, +inputData[option]);
+}
+
+const extractHeadOption = function(args) {
+  let option = args[0].split('');
+  let argsList = [ { files:[] } ];
+
+  if(option[0] == "-" && !(+option[1])) {
+    argsList[0][option[1]] = option.slice(2).join('') || args[1];
+    option[2] || args.splice(0,1);
+    args = args.slice(1);
+    argsList.push(args);
+    return argsList;
+  }
+
+  argsList[0]["n"] = +option.slice(1).join('') || 10;
+  argsList.push(args);
+  return argsList;
 }
 
 const extractHeadArgs = function(args) {
   let userArgs = args.slice(2);
   let extractOption = extractHeadOption(userArgs);
-  let result = extractOption[0];
+  let argsList = extractOption[0];
   userArgs = extractOption[1];
   +userArgs[0] && userArgs.shift();
-  result["files"] = userArgs;
-  return result;
+  argsList["files"] = userArgs;
+  return argsList;
 }
 
 exports.applyFunc = applyFunc;
@@ -72,3 +82,4 @@ exports.extractHeadArgs = extractHeadArgs;
 exports.extractContents = extractContents;
 exports.extractLines = extractLines;
 exports.getHead = getHead;
+exports.extractCharacters = extractCharacters;
