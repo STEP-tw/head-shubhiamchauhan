@@ -14,13 +14,16 @@ const applyFunc = function(fnReferance, files) {
 
 const putHeader = function(filesName, fileContent) {
   let contentWithLabel = []
+
   if( fileContent.length < 2) {
     return fileContent;
   }
+
   for(let index = 0; index < filesName.length; index++) {
     let tag = "==> " + filesName[index] + " <==";
     contentWithLabel[index] = tag + '\n' + fileContent[index];
   }
+
   return contentWithLabel;
 }
 
@@ -50,19 +53,30 @@ const getHead = function(fnReferance, inputData) {
   return head[option](files, fileContents, +inputData[option]);
 }
 
+const getOption = function(option, args, argsList) {
+  argsList[0][option[1]] = option.slice(2).join('') || args[1];
+  option[2] || args.splice(0,1);
+  args = args.slice(1);
+  argsList.push(args);
+  return argsList;
+}
+
 const extractHeadOption = function(args) {
-  let option = args[0].split('');
+  let option = Math.abs(args[0]) == args[0] || args[0].split('');
   let argsList = [ { files:[] } ];
 
-  if(option[0] == "-" && !(+option[1])) {
-    argsList[0][option[1]] = option.slice(2).join('') || args[1];
-    option[2] || args.splice(0,1);
-    args = args.slice(1);
+  if(option[0] == "-" && !isFinite(option[1])) {
+    return getOption(option, args, argsList);
+  }
+
+  if( option[0] == "-" && typeof(+option[1]) == 'number') {
+    argsList[0]["n"] = option.slice(1).join('');
+    args.shift();
     argsList.push(args);
     return argsList;
   }
 
-  argsList[0]["n"] = +option.slice(1).join('') || 10;
+  argsList[0]["n"] = 10;
   argsList.push(args);
   return argsList;
 }
@@ -72,7 +86,6 @@ const extractHeadArgs = function(args) {
   let extractOption = extractHeadOption(userArgs);
   let argsList = extractOption[0];
   userArgs = extractOption[1];
-  +userArgs[0] && userArgs.shift();
   argsList["files"] = userArgs;
   return argsList;
 }
