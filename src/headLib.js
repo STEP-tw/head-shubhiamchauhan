@@ -12,10 +12,10 @@ const applyFunc = function(fnReferance, files) {
   return files.map(result);
 }
 
-const putHeader = function(filesName, fileContent) {
+const putHeader = function(filesName, fileContent, length) {
   let contentWithLabel = []
 
-  if( fileContent.length < 2) {
+  if(length < 2) {
     return fileContent;
   }
 
@@ -29,8 +29,7 @@ const putHeader = function(filesName, fileContent) {
 
 const extractLines = function(files, listOfLines, numberOfLines) {
   let getLines = extractContents.bind(null, numberOfLines, "\n");
-  let lines = listOfLines.map(getLines);
-  return putHeader(files, lines).join('\n\n');
+  return listOfLines.map(getLines);
 }
 
 const subString = function(numberOfCharacters, string) {
@@ -39,8 +38,7 @@ const subString = function(numberOfCharacters, string) {
 
 const extractCharacters = function(fileName, listOfCharacters, numberOfBytes) {
   let getCharacter = subString.bind(null, numberOfBytes);
-  let characters = listOfCharacters.map(getCharacter);
-  return putHeader(fileName, characters).join('\n');
+  return listOfCharacters.map(getCharacter);
 }
 
 const getHead = function(fnReferance, inputData) {
@@ -51,6 +49,62 @@ const getHead = function(fnReferance, inputData) {
   head["c"] = extractCharacters;
   let fileContents = applyFunc(fnReferance, files);
   return head[option](files, fileContents, +inputData[option]);
+}
+
+const validateFiles = function(isFileExists, fileList, list, file) {
+
+  if(isFileExists(file)) {
+    list["actualFile"].push(file);
+    return list;
+  }
+
+  let error = "head: "+ file +": No such file or directory";
+  list["error"].push([error, fileList.indexOf(file)]);
+  return list;
+}
+
+const insertError = function(validFiles, errorEntries) {
+  let index = errorEntries[1];
+  let firstPart = validFiles.slice(0,index);
+  firstPart.push(errorEntries[0]);
+  let secondPart = validFiles.slice(index);
+  return firstPart.concat(secondPart);
+}
+
+const findOptionError = function(args) {
+  let type = Object.keys(args)[1];
+  let countError = { n:"line", c:"byte"};
+
+  if( !( ["n","c"].includes(type) ) ) {
+    return "head: illegal option -- "+ type +"\nusage: head [-n lines | -c bytes] [file ...]";
+  }
+
+  if( args[type] == undefined ) {
+    return "head: option requires an argument -- "+ type +"\nusage: head [-n lines | -c bytes] [file ...]";
+  }
+
+  if(args[type] <1 || parseInt(args[type]) != args[type]) {
+    return "head: illegal "+ countError[type] +" count -- " + args[type];
+  }
+  return "";
+}
+
+const head = function(isFileExists, func, args) {
+
+  if(findOptionError(args)) {
+    return findOptionError(args);
+  }
+
+  let list = { actualFile:[], error:[] };
+  let divideFiles = validateFiles.bind(null,isFileExists, args["files"]);
+  let files = args["files"].reduce(divideFiles, list);
+
+  args["files"] = files["actualFile"];
+  let existingFile = getHead(func, args);
+  let length = existingFile.length + files["error"].length;
+  existingFile = putHeader(files["actualFile"], existingFile, length);
+
+  return files["error"].reduce(insertError,existingFile).join('\n');
 }
 
 const getOption = function(option, args, argsList) {
@@ -96,3 +150,4 @@ exports.extractContents = extractContents;
 exports.extractLines = extractLines;
 exports.getHead = getHead;
 exports.extractCharacters = extractCharacters;
+exports.head = head;
