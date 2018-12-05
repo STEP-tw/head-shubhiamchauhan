@@ -51,7 +51,7 @@ describe("extractHeadArgs", function() {
     });
   });
 
-  describe("for array holding non of above as 2 index", function() {
+  describe("for array holding none of above as 2 index", function() {
     it("should return an object with n as key holding 10 and files key holding a list of strings", function() {
       let array = [,,"file1","file2","file3"];
       let result = { files: [ 'file1', 'file2', 'file3' ], n: '10' }; 

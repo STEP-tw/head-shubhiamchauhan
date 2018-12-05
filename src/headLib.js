@@ -54,7 +54,7 @@ const getHead = function(fnReferance, inputData) {
 }
 
 const getOption = function(option, args, argsList) {
-  argsList[0][option[1]] = option.slice(2).join('') || args[1];
+  argsList[0][option[1]] = option.substr(2) || args[1];
   option[2] || args.splice(0,1);
   args = args.slice(1);
   argsList.push(args);
@@ -62,15 +62,15 @@ const getOption = function(option, args, argsList) {
 }
 
 const extractHeadOption = function(args) {
-  let option = Math.abs(args[0]) == args[0] || args[0].split('');
+  let option = args[0];
   let argsList = [ { files:[] } ];
 
   if(option[0] == "-" && !isFinite(option[1])) {
     return getOption(option, args, argsList);
   }
 
-  if( option[0] == "-" && typeof(+option[1]) == 'number') {
-    argsList[0]["n"] = option.slice(1).join('');
+  if( option[0] == "-" && isFinite(option[1])) {
+    argsList[0]["n"] = option.substr(1);
     args.shift();
     argsList.push(args);
     return argsList;
