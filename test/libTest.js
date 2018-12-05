@@ -120,7 +120,7 @@ describe("getHead", function() {
     result += "\n\n";
     result += "==> " + "string2" + " <==" + "\n";
     result += string2;
-    let input = { n:1, files:[string1, string2]};
+    let input = {files:[string1, string2], n:1};
     assert.deepEqual(getHead(getString, input), result);
   });
 
@@ -130,7 +130,7 @@ describe("getHead", function() {
     result += "\n\n";
     result += "==> " + "string2" + " <==" + "\n";
     result += string2 + "\n" + string2;
-    let input = { n:2, files:[string1, string2]};
+    let input = { files:[string1, string2], n:2};
     assert.deepEqual(getHead(doubleString, input), result);
   });
 
@@ -140,7 +140,7 @@ describe("getHead", function() {
     result += "\n";
     result += "==> " + "string2" + " <==" + "\n";
     result += "s";
-    let input = { c:1, files:[string1, string2]};
+    let input = {files:[string1, string2], c:1};
     assert.deepEqual(getHead(getString, input), result);
   });
 
@@ -150,7 +150,7 @@ describe("getHead", function() {
     result += "\n";
     result += "==> " + "string2" + " <==" + "\n";
     result += string2 + "\n";
-    let input = { c:8, files:[string1, string2]};
+    let input = { files:[string1, string2], c:8};
     assert.deepEqual(getHead(doubleString, input), result);
   });
 });

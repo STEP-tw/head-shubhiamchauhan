@@ -44,7 +44,7 @@ const extractCharacters = function(fileName, listOfCharacters, numberOfBytes) {
 }
 
 const getHead = function(fnReferance, inputData) {
-  let option = Object.keys(inputData)[0];
+  let option = Object.keys(inputData)[1];
   let files = inputData.files;
   let head = {};
   head["n"] = extractLines;
