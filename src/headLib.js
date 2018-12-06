@@ -3,13 +3,8 @@ const extractContents = function(numberOfContents, delimeter, file) {
   return contents.slice(0,numberOfContents).join(delimeter);
 }
 
-const apply = function(fnReferance, file) {
-  return fnReferance(file, "utf8");
-}
-
 const applyFunc = function(fnReferance, files) {
-  let result = apply.bind(null, fnReferance);
-  return files.map(result);
+  return files.map(file => fnReferance(file, "utf8"));
 }
 
 const putHeader = function(filesName, fileContent, length) {
@@ -32,13 +27,8 @@ const extractLines = function(files, listOfLines, numberOfLines) {
   return listOfLines.map(getLines);
 }
 
-const subString = function(numberOfCharacters, string) {
-  return string.substring(0, numberOfCharacters);
-}
-
 const extractCharacters = function(fileName, listOfCharacters, numberOfBytes) {
-  let getCharacter = subString.bind(null, numberOfBytes);
-  return listOfCharacters.map(getCharacter);
+  return listOfCharacters.map(characters => characters.substring(0, numberOfBytes));
 }
 
 const getHead = function(fnReferance, inputData) {
@@ -159,3 +149,6 @@ exports.getHead = getHead;
 exports.extractCharacters = extractCharacters;
 exports.organizeHead = organizeHead;
 exports.findOptionError = findOptionError;
+exports.insertError = insertError;
+exports.putHeader = putHeader;
+exports.validateFiles = validateFiles;

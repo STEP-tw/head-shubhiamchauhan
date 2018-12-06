@@ -5,12 +5,17 @@ const { applyFunc,
   extractLines,
   extractContents,
   extractCharacters,
+  insertError,
+  putHeader,
+  validateFiles,
   findOptionError } = require('../src/headLib.js');
 
 const getString = function(string){
   return string;
 };
 
+const getTrue = (x) => true;
+const getFalse = (x) => false;
 const doubleString = function(string) {
   return string + "\n" + string;
 }
@@ -49,6 +54,14 @@ describe("extractHeadArgs", function() {
   describe("for array holding only number as 2 index", function() {
     it("should return an object with n as key holding that number and files key holding a list of strings", function() {
       let array = [,,"-10","file1","file2","file3"];
+      let result = { files: [ 'file1', 'file2', 'file3' ], n: '10' }; 
+      assert.deepEqual(extractHeadArgs(array), result);
+    });
+  });
+
+  describe("for array holding only -- as 2 index", function() {
+    it("should return an object with n as key holding 10 and files key holding a list of strings", function() {
+      let array = [,,"--","file1","file2","file3"];
       let result = { files: [ 'file1', 'file2', 'file3' ], n: '10' }; 
       assert.deepEqual(extractHeadArgs(array), result);
     });
@@ -244,5 +257,49 @@ describe("findOptionError", function() {
     let input = {files:["file1","file2"],"c":undefined};
     let result = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
     assert.deepEqual(findOptionError(input), result);
+  });
+});
+
+describe("insertError", function() {
+  it("should insert the elements of given entries in an given array", function() {
+    assert.deepEqual(insertError([1,2],[3,1]),[1,3,2]);
+  });
+
+it("should insert error message to given index in an given array", function() {
+  let message = "Error";
+    assert.deepEqual(insertError([1,2],[message,1]),[1,message,2]);
+  });
+});
+
+describe("putHeader", function() {
+  it("should make the first array element header of the second array corresponding element for last arg>1", function() {
+    let headers = ["file1", "file2"];
+    let contents = ["something", "anything"];
+    let result = ["==> file1 <==\nsomething"];
+    result[1] = "==> file2 <==\nanything";
+    assert.deepEqual(putHeader(headers, contents, 2), result);
+  });
+
+it("should return thw second array if last arg<2", function() {
+    let headers = ["file1", "file2"];
+    let contents = ["something"];
+    assert.deepEqual(putHeader(headers, contents, 1), contents);
+  });
+});
+
+describe("validateFiles", function() {
+  it("should return an object with keys actualFile holding files and error holding an empty array", function() {
+    let list = { actualFile:[], error:[] };
+    let fileList = ["file1", "file2"];
+    let result = { actualFile:["file1"], error:[] };
+    assert.deepEqual(validateFiles(getTrue, fileList, list, "file1"), result);
+  });
+
+  it("should return an object with keys actualFile holding [] and error holding [error message, indexOfFile]", function() {
+    let list = { actualFile:[], error:[] };
+    let fileList = ["file1", "file2"];
+    let message = "head: file2: No such file or directory";
+    let result = { actualFile:[], error:[[message, 1]] };
+    assert.deepEqual(validateFiles(getFalse, fileList, list, "file2"), result);
   });
 });
