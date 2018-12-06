@@ -158,3 +158,4 @@ exports.extractLines = extractLines;
 exports.getHead = getHead;
 exports.extractCharacters = extractCharacters;
 exports.head = head;
+exports.findOptionError = findOptionError;
