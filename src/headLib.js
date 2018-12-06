@@ -89,7 +89,7 @@ const findOptionError = function(args) {
   return "";
 }
 
-const head = function(isFileExists, func, args) {
+const organizeHead = function(isFileExists, func, args) {
 
   if(findOptionError(args)) {
     return findOptionError(args);
@@ -157,5 +157,5 @@ exports.extractContents = extractContents;
 exports.extractLines = extractLines;
 exports.getHead = getHead;
 exports.extractCharacters = extractCharacters;
-exports.head = head;
+exports.organizeHead = organizeHead;
 exports.findOptionError = findOptionError;

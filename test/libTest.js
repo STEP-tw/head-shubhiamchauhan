@@ -18,7 +18,9 @@ const doubleString = function(string) {
 describe('applyFunc', function() {
   let string;
   beforeEach('',function(){
-    string = "The coins entered circulation\nAfter legal maneuvering\nthe government\nThe coins were\nCongress called in the coins";
+    string = "The coins entered circulation\n"
+    string += "After legal maneuvering\nthe government\n"
+    string += "The coins were\nCongress called in the coins";
   });
 
   it('should return the same array which is given as input', function() {
