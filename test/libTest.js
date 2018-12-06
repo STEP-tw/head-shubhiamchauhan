@@ -20,7 +20,7 @@ describe('applyFunc', function() {
     string = "The coins entered circulation\nAfter legal maneuvering\nthe government\nThe coins were\nCongress called in the coins";
   });
 
-  it('should return the same string which is given as input', function() {
+  it('should return the same array which is given as input', function() {
     assert.deepEqual(applyFunc(getString,[string]),[string]);
   });
 });
@@ -83,7 +83,7 @@ describe("extractLines", function() {
     string3 = "The coins entered circulation";
   });
 
-  it("should return 1 lines of files string1, string2 and string3 for inputs numberOfLine = 1", function() {
+  it("should return 1 lines of files string1, string2 and string3 in an array for inputs numberOfLine = 1", function() {
     let result = [];
     result[0] = "The coins entered circulation";
     result[1] ="The coins were";
@@ -91,7 +91,7 @@ describe("extractLines", function() {
     assert.deepEqual(extractLines(fileName1, [string1, string2, string3], 1), result);
   });
 
-  it("should return 2 lines of both files string1 and string2 for inputs numberOfLine = 2", function() {
+  it("should return 2 lines of both files string1 and string2 in an array for inputs numberOfLine = 2", function() {
     let result = [];
     result[0] = "The coins entered circulation\nAfter legal maneuvering";
     result[1] = string2;
@@ -109,7 +109,7 @@ describe("getHead", function() {
     string2 = "string2";
   });
 
-  it("should return 1 lines of both files string1 and string2 for inputs n = 1", function() {
+  it("should return 1 lines of both files string1 and string2 in an array for input.n = 1", function() {
     let result = [];
     result[0] = string1;
     result[1] = string2;
@@ -117,7 +117,7 @@ describe("getHead", function() {
     assert.deepEqual(getHead(getString, input), result);
   });
 
-  it("should return 2 lines of both files string1 and string2 for inputs n = 2", function() {
+  it("should return 2 lines of both files string1 and string2 in an array for input.n = 2", function() {
     let result = [];
     result[0] = string1 + "\n" + string1;
     result[1] = string2 + "\n" + string2;
@@ -125,7 +125,7 @@ describe("getHead", function() {
     assert.deepEqual(getHead(doubleString, input), result);
   });
 
-  it("should return 1 character of both files string1 and string2 for inputs c = 1", function() {
+  it("should return 1 character of both files string1 and string2 in an array for input.c = 1", function() {
     let result = [];
     result [0]= "s";
     result [1]= "s";
@@ -133,7 +133,7 @@ describe("getHead", function() {
     assert.deepEqual(getHead(getString, input), result);
   });
 
-  it("should return 8 characters of both files string1 and string2 for inputs c = 8", function() {
+  it("should return 8 characters of both files string1 and string2 in an array for input.c = 8", function() {
     let result = [];
     result[0] = string1 + "\n";
     result[1] = string2 + "\n";
@@ -156,7 +156,7 @@ describe("extractCharacters", function() {
     string3 = "Something is something";
   });
 
-  it("should return 1 character of files string1, string2 and string3 for inputs numberOfBytes = 1", function() {
+  it("should return 1 character of files string1, string2 and string3 in an array for inputs numberOfBytes = 1", function() {
     let result = [];
     result[0] = "T";
     result[1] = "T";
@@ -164,14 +164,14 @@ describe("extractCharacters", function() {
     assert.deepEqual(extractCharacters(fileName1, [string1, string2, string3], 1), result);
   });
 
-  it("should return 2 characters of both files string1 and string2 for inputs numberOfBytes = 2", function() {
+  it("should return 2 characters of both files string1 and string2 in an array for inputs numberOfBytes = 2", function() {
     let result = [];
     result[0] = "Th";
     result[1] = "Th";
     assert.deepEqual(extractCharacters(fileName2, [string1, string2], 2), result);
   });
 
-  it("should return 10 characters of both files string1 and string2 with also \\n for inputs numberOfBytes = 10", function() {
+  it("should return 10 characters of both files string1 and string2 with \\n in an array for inputs numberOfBytes = 10", function() {
     let result = [];
     result[0] = string1;
     result[1] = "The coins ";

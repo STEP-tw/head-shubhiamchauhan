@@ -79,7 +79,7 @@ const findOptionError = function(args) {
     return "head: illegal option -- "+ type +"\nusage: head [-n lines | -c bytes] [file ...]";
   }
 
-  if( args[type] == undefined ) {
+  if( args[type] == undefined) {
     return "head: option requires an argument -- "+ type +"\nusage: head [-n lines | -c bytes] [file ...]";
   }
 
@@ -119,11 +119,18 @@ const extractHeadOption = function(args) {
   let option = args[0];
   let argsList = [ { files:[] } ];
 
+  if(option == "--" ) {
+    argsList[0]["n"] = 10;
+    args.shift();
+    argsList.push(args);
+    return argsList;
+  }
+
   if(option[0] == "-" && !isFinite(option[1])) {
     return getOption(option, args, argsList);
   }
 
-  if( option[0] == "-" && isFinite(option[1])) {
+  if( option[0] == "-" && isFinite(parseInt(option[1]))) {
     argsList[0]["n"] = option.substr(1);
     args.shift();
     argsList.push(args);
