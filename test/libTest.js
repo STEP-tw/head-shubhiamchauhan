@@ -8,6 +8,7 @@ const { applyFunc,
   insertError,
   putHeader,
   validateFiles,
+  organizeHead,
   findOptionError } = require('../src/headLib.js');
 
 const getString = function(string){
@@ -73,6 +74,12 @@ describe("extractHeadArgs", function() {
       let result = { files: [ 'file1', 'file2', 'file3' ], n: '10' }; 
       assert.deepEqual(extractHeadArgs(array), result);
     });
+  });
+
+  it("should return an object with n as key holding number of lines and files key holding a list of strings", function() {
+    let array = [,,"-n","1","file1","file2"];
+    let result = { files: [ 'file1', 'file2' ], n: '1' }; 
+    assert.deepEqual(extractHeadArgs(array), result);
   });
 });
 
@@ -258,6 +265,12 @@ describe("findOptionError", function() {
     let result = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
     assert.deepEqual(findOptionError(input), result);
   });
+
+  it("should return an empty string for valid counts and option" , function() {
+    let input = {files:["file1","file2"],"c":10};
+    let result = "";
+    assert.deepEqual(findOptionError(input), result);
+  });
 });
 
 describe("insertError", function() {
@@ -265,8 +278,8 @@ describe("insertError", function() {
     assert.deepEqual(insertError([1,2],[3,1]),[1,3,2]);
   });
 
-it("should insert error message to given index in an given array", function() {
-  let message = "Error";
+  it("should insert error message to given index in an given array", function() {
+    let message = "Error";
     assert.deepEqual(insertError([1,2],[message,1]),[1,message,2]);
   });
 });
@@ -280,7 +293,7 @@ describe("putHeader", function() {
     assert.deepEqual(putHeader(headers, contents, 2), result);
   });
 
-it("should return thw second array if last arg<2", function() {
+  it("should return thw second array if last arg<2", function() {
     let headers = ["file1", "file2"];
     let contents = ["something"];
     assert.deepEqual(putHeader(headers, contents, 1), contents);
@@ -301,5 +314,30 @@ describe("validateFiles", function() {
     let message = "head: file2: No such file or directory";
     let result = { actualFile:[], error:[[message, 1]] };
     assert.deepEqual(validateFiles(getFalse, fileList, list, "file2"), result);
+  });
+});
+
+describe("organizeHead", function() {
+  it("should return the given file first 5 characters for input getTrue, getString and args.c=5", function() {
+    let args = { files:["prefix"], c:5 };
+    assert.deepEqual(organizeHead(getTrue, getString, args), "prefi"); 
+  });
+
+  it("should return every file first line for input getTrue, getString and args.n = 1", function() {
+    let args = { files:["prefix", "suffix"], n:1 };
+    let result = "==> prefix <==\nprefix\n==> suffix <==\nsuffix"
+    assert.deepEqual(organizeHead(getTrue, getString, args), result); 
+  });
+
+  it("should throw a line count error for option having -n and undefined count", function() {
+    let args = {files:["file1","file2"],"n":undefined};
+    let result = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
+    assert.deepEqual(organizeHead(getTrue, getString, args), result);
+  });
+
+  it("should throw error for arg.files having missing file", function() {
+    let args = { files:["prefix"], c:5 };
+    let result = "head: prefix: No such file or directory";
+    assert.deepEqual(organizeHead(getFalse, getString, args), result); 
   });
 });

@@ -152,3 +152,4 @@ exports.findOptionError = findOptionError;
 exports.insertError = insertError;
 exports.putHeader = putHeader;
 exports.validateFiles = validateFiles;
+exports.organizeHead = organizeHead;
