@@ -1,8 +1,9 @@
 const { readFileSync, existsSync } = require('fs');
-const { organizeHead, extractHeadArgs} =  require('./src/headLib.js');
+const { organizeHead } =  require('./src/lib.js');
+const { extractHeadArgs } = require('./src/parseInput.js');
 
 const main = function() {
-  let args = extractHeadArgs(process.argv.silce(2));
+  let args = extractHeadArgs(process.argv.slice(2));
   console.log(organizeHead(existsSync, readFileSync, args));
 }
 
