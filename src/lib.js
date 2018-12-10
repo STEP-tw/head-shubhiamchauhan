@@ -1,5 +1,5 @@
-const revString = function(string) {
-  return string.split('').reverse().join('');
+const revString = function(delimeter,string) {
+  return string.split(delimeter).reverse().join(delimeter);
 }
 
 const extractContents = function(numberOfContents, delimeter, file) {
@@ -26,12 +26,12 @@ const putHeader = function(filesName, fileContent, length) {
   return contentWithLabel;
 };
 
-const extractHeadLines = function(files, listOfLines, numberOfLines) {
+const extractHeadLines = function(listOfLines, numberOfLines) {
   let getLines = extractContents.bind(null, numberOfLines, "\n");
   return listOfLines.map(getLines);
 };
 
-const extractHeadCharacters = function(fileName, listOfCharacters, numberOfBytes) {
+const extractHeadCharacters = function(listOfCharacters, numberOfBytes) {
   return listOfCharacters.map(characters =>
     characters.substring(0, numberOfBytes)
   );
@@ -44,7 +44,7 @@ const getHead = function(fnReferance, inputData) {
   head["n"] = extractHeadLines;
   head["c"] = extractHeadCharacters;
   let fileContents = applyFunc(fnReferance, files);
-  return head[option](files, fileContents, +inputData[option]);
+  return head[option](fileContents, +inputData[option]);
 };
 
 const validateFiles = function(type, isFileExists, fileList, list, file) {
@@ -109,6 +109,32 @@ const organizeHead = function(isFileExists, func, args) {
   return files["error"].reduce(insertError, existingFile).join("\n");
 };
 
+const revLines = function(listOfLines) {
+  let revLine = revString.bind(null, "\n");
+  return listOfLines.map(revLine);
+}
+
+const revCharacters = function(listOfLines) {
+  return listOfLines.map(lines => 
+    lines.split("\n").reverse().map(line => 
+      line.split('').reverse().join('')
+    ).join('\n')
+  );
+}
+
+const extractTailLines = function(listOfLines, numberOfLines) {
+  let getLines = extractContents.bind(null, numberOfLines, "\n");
+  let listOfRevLines = revLines(listOfLines).map(getLines);
+  return revLines(listOfRevLines);
+};
+
+const extractTailCharacters = function(listOfCharacters, numberOfBytes) {
+  let revTailChars = revCharacters(listOfCharacters).map(characters =>
+    characters.substring(0, numberOfBytes)
+  );
+  return revCharacters(revTailChars);
+};
+
 exports.applyFunc = applyFunc;
 exports.extractContents = extractContents;
 exports.extractHeadLines = extractHeadLines;
@@ -121,3 +147,5 @@ exports.putHeader = putHeader;
 exports.validateFiles = validateFiles;
 exports.organizeHead = organizeHead;
 exports.revString = revString;
+exports.extractTailLines = extractTailLines;
+exports.extractTailCharacters = extractTailCharacters;

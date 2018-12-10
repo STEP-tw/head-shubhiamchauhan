@@ -9,6 +9,8 @@ const { applyFunc,
   validateFiles,
   organizeHead,
   revString,
+  extractTailLines,
+  extractTailCharacters,
   findOptionError } = require('../src/lib.js');
 
 const getString = function(string){
@@ -47,12 +49,7 @@ describe("extractHeadLines", function() {
   let string1;
   let string2;
   let string3;
-  let fileName1;
-  let fileName2;
   beforeEach('', function(){
-    fileName1 = ["file1","file2","file3"];
-    fileName2 = ["file1","file2"];
-
     string1 = "The coins entered circulation\n"
     string1 += "After legal maneuvering\nthe government\nThe coins were\nCongress called in the coins";
 
@@ -60,19 +57,19 @@ describe("extractHeadLines", function() {
     string3 = "The coins entered circulation";
   });
 
-  it("should return 1 lines of files string1, string2 and string3 in an array for inputs numberOfLine = 1", function() {
+  it("should return first lines of files string1, string2 and string3 in an array for inputs numberOfLine = 1", function() {
     let result = [];
     result[0] = "The coins entered circulation";
     result[1] ="The coins were";
     result[2]= string3;
-    assert.deepEqual(extractHeadLines(fileName1, [string1, string2, string3], 1), result);
+    assert.deepEqual(extractHeadLines([string1, string2, string3], 1), result);
   });
 
-  it("should return 2 lines of both files string1 and string2 in an array for inputs numberOfLine = 2", function() {
+  it("should return first 2 lines of both files string1 and string2 in an array for inputs numberOfLine = 2", function() {
     let result = [];
     result[0] = "The coins entered circulation\nAfter legal maneuvering";
     result[1] = string2;
-    assert.deepEqual(extractHeadLines(fileName2, [string1, string2], 2), result);
+    assert.deepEqual(extractHeadLines([string1, string2], 2), result);
   });
 });
 
@@ -123,11 +120,7 @@ describe("extractHeadCharacters", function() {
   let string1;
   let string2;
   let string3;
-  let fileName1;
-  let fileName2;
   beforeEach('',function(){
-    fileName1 = ["file1","file2","file3"];
-    fileName2 = ["file1","file2"];
     string1 = "The coins\n"
     string2 = "The coins were\n"
     string3 = "Something is something";
@@ -138,21 +131,21 @@ describe("extractHeadCharacters", function() {
     result[0] = "T";
     result[1] = "T";
     result[2] = "S";
-    assert.deepEqual(extractHeadCharacters(fileName1, [string1, string2, string3], 1), result);
+    assert.deepEqual(extractHeadCharacters([string1, string2, string3], 1), result);
   });
 
   it("should return 2 characters of both files string1 and string2 in an array for inputs numberOfBytes = 2", function() {
     let result = [];
     result[0] = "Th";
     result[1] = "Th";
-    assert.deepEqual(extractHeadCharacters(fileName2, [string1, string2], 2), result);
+    assert.deepEqual(extractHeadCharacters([string1, string2], 2), result);
   });
 
   it("should return 10 characters of both files string1 and string2 with \\n in an array for inputs numberOfBytes = 10", function() {
     let result = [];
     result[0] = string1;
     result[1] = "The coins ";
-    assert.deepEqual(extractHeadCharacters(fileName2, [string1, string2], 10), result);
+    assert.deepEqual(extractHeadCharacters([string1, string2], 10), result);
   });
 });
 
@@ -295,14 +288,75 @@ describe("organizeHead", function() {
 
 describe("revString", function() {
   it("should return an empty string for input empty string", function() {
-    assert.equal(revString(""), "");
+    assert.equal(revString("",""), "");
   });
 
   it("should return same string for input as a pallindrome string", function() {
-    assert.equal(revString("srs"), "srs");
+    assert.equal(revString("", "srs"), "srs");
   });
 
 it("should return areeh for input heera", function() {
-    assert.equal(revString("heera"), "areeh");
+    assert.equal(revString("", "heera"), "areeh");
+  });
+});
+
+describe("extractTailLines", function() {
+  let string1;
+  let string2;
+  let string3;
+  beforeEach('', function(){
+    string1 = "The coins entered circulation\n"
+    string1 += "After legal maneuvering\nthe government\nThe coins were\nCongress called in the coins";
+
+    string2 = "The coins were\nCongress called in the coins";
+    string3 = "The coins entered circulation";
+  });
+
+  it("should return last line of files string1, string2 and string3 in an array for inputs numberOfLine = 1", function() {
+    let result = [];
+    result[0] = "Congress called in the coins";
+    result[1] ="Congress called in the coins";
+    result[2]= string3;
+    assert.deepEqual(extractTailLines([string1, string2, string3], 1), result);
+  });
+
+  it("should return last 2 lines of both files string1 and string2 in an array for inputs numberOfLine = 2", function() {
+    let result = [];
+    result[0] = "The coins were\nCongress called in the coins";
+    result[1] = string2;
+    assert.deepEqual(extractTailLines([string1, string2], 2), result);
+  });
+});
+
+describe("extractTailCharacters", function() {
+  let string1;
+  let string2;
+  let string3;
+  beforeEach('',function(){
+    string1 = "The coins\n"
+    string2 = "The coins were\n"
+    string3 = "Something is something";
+  });
+
+  it("should return last character of files string1, string2 and string3 in an array for inputs numberOfBytes = 1", function() {
+    let result = [];
+    result[0] = "\n";
+    result[1] = "\n";
+    result[2] = "g";
+    assert.deepEqual(extractTailCharacters([string1, string2, string3], 1), result);
+  });
+
+  it("should return last 2 characters of both files string1 and string2 in an array for inputs numberOfBytes = 2", function() {
+    let result = [];
+    result[0] = "s\n";
+    result[1] = "e\n";
+    assert.deepEqual(extractTailCharacters([string1, string2], 2), result);
+  });
+
+  it("should return last 10 characters of both files string1 and string2 with \\n in an array for inputs numberOfBytes = 10", function() {
+    let result = [];
+    result[0] = string1;
+    result[1] = "oins were\n";
+    assert.deepEqual(extractTailCharacters([string1, string2], 10), result);
   });
 });
