@@ -316,6 +316,25 @@ describe("organizeCommandResult", function() {
       assert.deepEqual(organizeCommandResult(getFalse, getString, args, "head"), result); 
     });
   });
+
+  describe("for tail command", function() {
+    it("should return the given file last 5 characters for input getTrue, getString and args.c=5", function() {
+      let args = { files:["prefix"], c:5 };
+      assert.deepEqual(organizeCommandResult(getTrue, getString, args, "tail"), "refix"); 
+    });
+
+    it("should return every file last line for input getTrue, getString and args.n = 1", function() {
+      let args = { files:["prefix", "suffix"], n:1 };
+      let result = "==> prefix <==\nprefix\n==> suffix <==\nsuffix"
+      assert.deepEqual(organizeCommandResult(getTrue, getString, args, "tail"), result); 
+    });
+
+    it("should throw error for arg.files having missing file", function() {
+      let args = { files:["prefix"], c:5 };
+      let result = "tail: prefix: No such file or directory";
+      assert.deepEqual(organizeCommandResult(getFalse, getString, args, "tail"), result); 
+    });
+  });
 });
 
 describe("revString", function() {

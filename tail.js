@@ -1,18 +1,10 @@
-/* 
-  Usage:
-  node ./tail.js file1
-  node ./tail.js -n5 file1
-  node ./tail.js -n 5 file1
-  node ./tail.js -5 file1
-  node ./tail.js file1 file2
-  node ./tail.js -n 5 file1 file2
-  node ./tail.js -n5 file1 file2
-  node ./tail.js -5 file1 file2 
-  node ./tail.js -c5 file1
-  node ./tail.js -c 5 file1
-  node ./tail.js -c5 file1 file2
-  node ./tail.js -c 5 file1 file2
-*/
+const { readFileSync, existsSync } = require('fs');
+const { organizeCommandResult } =  require('./src/lib.js');
+const { extractUsrArgs } = require('./src/parseInput.js');
 
+const main = function() {
+  let args = extractUsrArgs(process.argv.slice(2));
+  console.log(organizeCommandResult(existsSync, readFileSync, args, "tail"));
+}
 
-
+main();
