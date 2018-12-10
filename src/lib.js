@@ -66,35 +66,42 @@ const insertError = function(validFiles, errorEntries) {
   return firstPart.concat(secondPart);
 };
 
-const findOptionError = function(args) {
+const findOptionError = function(args, command) {
   let type = Object.keys(args)[1];
-  let countError = { n: "line", c: "byte" };
+  let countError = { head:{ "n": "line count", "c": "byte count" },
+    tail:{ "n":"offset", "c":"offset"} };
+  let usage = { head:"usage: head [-n lines | -c bytes] [file ...]",
+    tail:"usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]"};
 
   if (!["n", "c"].includes(type)) {
     return (
-      "head: illegal option -- " +
+      command + ": illegal option -- " +
       type +
-      "\nusage: head [-n lines | -c bytes] [file ...]"
+      "\n" + usage[command]
     );
   }
 
   if (args[type] == undefined) {
     return (
-      "head: option requires an argument -- " +
+      command + ": option requires an argument -- " +
       type +
-      "\nusage: head [-n lines | -c bytes] [file ...]"
+      "\n" + usage[command]
     );
   }
 
-  if (args[type] < 1 || parseInt(args[type]) != args[type]) {
-    return "head: illegal " + countError[type] + " count -- " + args[type];
+  if (parseInt(args[type]) != args[type]) {
+    return command + ": illegal " + countError[command][type] + " -- " + args[type];
+  }
+
+  if(args[type] < 1 && command == "head") {
+    return "head: illegal " + countError[command][type] + " -- " + args[type];
   }
   return "";
 };
 
 const organizeHead = function(isFileExists, func, args) {
-  if (findOptionError(args)) {
-    return findOptionError(args);
+  if (findOptionError(args, "head")) {
+    return findOptionError(args, "head");
   }
 
   let list = { actualFile: [], error: [] };

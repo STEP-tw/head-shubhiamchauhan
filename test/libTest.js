@@ -150,70 +150,100 @@ describe("extractHeadCharacters", function() {
 });
 
 describe("findOptionError", function() {
-  it("should throw an error for invalid option", function() {
-    let input = {files:["file1","file2"],v:10};
-    let result = "head: illegal option -- v\nusage: head [-n lines | -c bytes] [file ...]";
-    assert.deepEqual(findOptionError(input), result);
+  describe("for head command", function() {
+    it("should throw an error for invalid option", function() {
+      let input = {files:["file1","file2"],v:10};
+      let result = "head: illegal option -- v\nusage: head [-n lines | -c bytes] [file ...]";
+      assert.deepEqual(findOptionError(input,"head"), result);
+    });
+
+    it("should throw an error for invalid option", function() {
+      let input = {files:["file1","file2"],"-":10};
+      let result = "head: illegal option -- -\nusage: head [-n lines | -c bytes] [file ...]";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should throw a line count error for line count -n0", function() {
+      let input = {files:["file1","file2"],"n":0};
+      let result = "head: illegal line count -- 0";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should throw a byte count error for byte count -c0", function() {
+      let input = {files:["file1","file2"],"c":0};
+      let result = "head: illegal byte count -- 0";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should throw a line count error for count -0", function() {
+      let input = {files:["file1","file2"],"n":0};
+      let result = "head: illegal line count -- 0";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should throw a line count error for option having -n and an alphanumeric count", function() {
+      let input = {files:["file1","file2"],"n":"5r"};
+      let result = "head: illegal line count -- 5r";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should throw a byte count error for option having -c and an alphanumeric count", function() {
+      let input = {files:["file1","file2"],"c":"6g"};
+      let result = "head: illegal byte count -- 6g";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should throw a line count error for option having - and an alphanumeric count", function() {
+      let input = {files:["file1","file2"],"n":"7n"};
+      let result = "head: illegal line count -- 7n";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should throw a line count error for option having -n and undefined count", function() {
+      let input = {files:["file1","file2"],"n":undefined};
+      let result = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should throw a byte count error for option having -c and undefined count", function() {
+      let input = {files:["file1","file2"],"c":undefined};
+      let result = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
+
+    it("should return an empty string for valid counts and option" , function() {
+      let input = {files:["file1","file2"],"c":10};
+      let result = "";
+      assert.deepEqual(findOptionError(input, "head"), result);
+    });
   });
 
-  it("should throw an error for invalid option", function() {
-    let input = {files:["file1","file2"],"-":10};
-    let result = "head: illegal option -- -\nusage: head [-n lines | -c bytes] [file ...]";
-    assert.deepEqual(findOptionError(input), result);
-  });
+  describe("for tail command", function() {
+    it("should throw an error for invalid option", function() {
+      let input = {files:["file1","file2"],v:10};
+      let result = "tail: illegal option -- v\n"
+      result += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
+      assert.deepEqual(findOptionError(input,"tail"), result);
+    });
 
-  it("should throw a line count error for line count -n0", function() {
-    let input = {files:["file1","file2"],"n":0};
-    let result = "head: illegal line count -- 0";
-    assert.deepEqual(findOptionError(input), result);
-  });
+    it("should throw an error for invalid option", function() {
+      let input = {files:["file1","file2"],"-":10};
+      let result = "tail: illegal option -- -\n";
+      result += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
+      assert.deepEqual(findOptionError(input, "tail"), result);
+    });
 
-  it("should throw a byte count error for byte count -c0", function() {
-    let input = {files:["file1","file2"],"c":0};
-    let result = "head: illegal byte count -- 0";
-    assert.deepEqual(findOptionError(input), result);
-  });
+    it("should throw an offset error for option having -n and an alphanumeric count", function() {
+      let input = {files:["file1","file2"],"n":"5r"};
+      let result = "tail: illegal offset -- 5r";
+      assert.deepEqual(findOptionError(input, "tail"), result);
+    });
 
-  it("should throw a line count error for count -0", function() {
-    let input = {files:["file1","file2"],"n":0};
-    let result = "head: illegal line count -- 0";
-    assert.deepEqual(findOptionError(input), result);
-  });
-
-  it("should throw a line count error for option having -n and an alphanumeric count", function() {
-    let input = {files:["file1","file2"],"n":"5r"};
-    let result = "head: illegal line count -- 5r";
-    assert.deepEqual(findOptionError(input), result);
-  });
-
-  it("should throw a byte count error for option having -c and an alphanumeric count", function() {
-    let input = {files:["file1","file2"],"c":"6g"};
-    let result = "head: illegal byte count -- 6g";
-    assert.deepEqual(findOptionError(input), result);
-  });
-
-  it("should throw a line count error for option having - and an alphanumeric count", function() {
-    let input = {files:["file1","file2"],"n":"7n"};
-    let result = "head: illegal line count -- 7n";
-    assert.deepEqual(findOptionError(input), result);
-  });
-
-  it("should throw a line count error for option having -n and undefined count", function() {
-    let input = {files:["file1","file2"],"n":undefined};
-    let result = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
-    assert.deepEqual(findOptionError(input), result);
-  });
-
-  it("should throw a byte count error for option having -c and undefined count", function() {
-    let input = {files:["file1","file2"],"c":undefined};
-    let result = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
-    assert.deepEqual(findOptionError(input), result);
-  });
-
-  it("should return an empty string for valid counts and option" , function() {
-    let input = {files:["file1","file2"],"c":10};
-    let result = "";
-    assert.deepEqual(findOptionError(input), result);
+    it("should throw an offset error for option having -c and an alphanumeric count", function() {
+      let input = {files:["file1","file2"],"c":"6g"};
+      let result = "tail: illegal offset -- 6g";
+      assert.deepEqual(findOptionError(input, "tail"), result);
+    });
   });
 });
 
