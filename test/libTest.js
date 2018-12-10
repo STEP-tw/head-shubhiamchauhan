@@ -256,7 +256,7 @@ describe("validateFiles", function() {
     let list = { actualFile:[], error:[] };
     let fileList = ["file1", "file2"];
     let result = { actualFile:["file1"], error:[] };
-    assert.deepEqual(validateFiles(getTrue, fileList, list, "file1"), result);
+    assert.deepEqual(validateFiles("head",getTrue, fileList, list, "file1"), result);
   });
 
   it("should return an object with keys actualFile holding [] and error holding [error message, indexOfFile]", function() {
@@ -264,7 +264,7 @@ describe("validateFiles", function() {
     let fileList = ["file1", "file2"];
     let message = "head: file2: No such file or directory";
     let result = { actualFile:[], error:[[message, 1]] };
-    assert.deepEqual(validateFiles(getFalse, fileList, list, "file2"), result);
+    assert.deepEqual(validateFiles("head", getFalse, fileList, list, "file2"), result);
   });
 });
 

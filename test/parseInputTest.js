@@ -18,7 +18,7 @@ describe("extractUsrArgs", function() {
     });
   });
 
-  describe("for array holding only number as 0 index", function() {
+  describe("for array holding only number with - as 0 index", function() {
     it("should return an object with n as key holding that number and files key holding a list of strings", function() {
       let array = ["-10","file1","file2","file3"];
       let result = { files: [ 'file1', 'file2', 'file3' ], n: '10' }; 

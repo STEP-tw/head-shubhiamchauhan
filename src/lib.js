@@ -47,13 +47,13 @@ const getHead = function(fnReferance, inputData) {
   return head[option](files, fileContents, +inputData[option]);
 };
 
-const validateFiles = function(isFileExists, fileList, list, file) {
+const validateFiles = function(type, isFileExists, fileList, list, file) {
   if (isFileExists(file)) {
     list["actualFile"].push(file);
     return list;
   }
 
-  let error = "head: " + file + ": No such file or directory";
+  let error = type + ": " + file + ": No such file or directory";
   list["error"].push([error, fileList.indexOf(file)]);
   return list;
 };
@@ -98,7 +98,7 @@ const organizeHead = function(isFileExists, func, args) {
   }
 
   let list = { actualFile: [], error: [] };
-  let divideFiles = validateFiles.bind(null, isFileExists, args["files"]);
+  let divideFiles = validateFiles.bind(null, "head", isFileExists, args["files"]);
   let files = args["files"].reduce(divideFiles, list);
 
   args["files"] = files["actualFile"];
