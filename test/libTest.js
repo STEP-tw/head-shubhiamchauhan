@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { applyFunc,
-  getHead,
+  applyCommand,
   extractHeadLines,
   extractContents,
   extractHeadCharacters,
@@ -73,7 +73,7 @@ describe("extractHeadLines", function() {
   });
 });
 
-describe("getHead", function() {
+describe("applyCommand", function() {
   let string1;
   let string2;
   let fileName;
@@ -88,7 +88,7 @@ describe("getHead", function() {
     result[0] = string1;
     result[1] = string2;
     let input = {files:[string1, string2], n:1};
-    assert.deepEqual(getHead(getString, input), result);
+    assert.deepEqual(applyCommand(getString, input, "head"), result);
   });
 
   it("should return 2 lines of both files string1 and string2 in an array for input.n = 2", function() {
@@ -96,7 +96,7 @@ describe("getHead", function() {
     result[0] = string1 + "\n" + string1;
     result[1] = string2 + "\n" + string2;
     let input = { files:[string1, string2], n:2};
-    assert.deepEqual(getHead(doubleString, input), result);
+    assert.deepEqual(applyCommand(doubleString, input, "head"), result);
   });
 
   it("should return 1 character of both files string1 and string2 in an array for input.c = 1", function() {
@@ -104,7 +104,7 @@ describe("getHead", function() {
     result [0]= "s";
     result [1]= "s";
     let input = {files:[string1, string2], c:1};
-    assert.deepEqual(getHead(getString, input), result);
+    assert.deepEqual(applyCommand(getString, input, "head"), result);
   });
 
   it("should return 8 characters of both files string1 and string2 in an array for input.c = 8", function() {
@@ -112,7 +112,7 @@ describe("getHead", function() {
     result[0] = string1 + "\n";
     result[1] = string2 + "\n";
     let input = { files:[string1, string2], c:8};
-    assert.deepEqual(getHead(doubleString, input), result);
+    assert.deepEqual(applyCommand(doubleString, input, "head"), result);
   });
 });
 

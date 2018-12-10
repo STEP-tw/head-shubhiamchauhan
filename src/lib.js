@@ -37,14 +37,13 @@ const extractHeadCharacters = function(listOfCharacters, numberOfBytes) {
   );
 };
 
-const getHead = function(fnReferance, inputData) {
+const applyCommand = function(fnReferance, inputData, command) {
   let option = Object.keys(inputData)[1];
   let files = inputData.files;
-  let head = {};
-  head["n"] = extractHeadLines;
-  head["c"] = extractHeadCharacters;
+  let callCommand = { head: { n: extractHeadLines, c: extractHeadCharacters},
+    tail: { n: extractTailLines, c: extractTailCharacters} };
   let fileContents = applyFunc(fnReferance, files);
-  return head[option](fileContents, +inputData[option]);
+  return callCommand[command][option](fileContents, Math.abs(inputData[option]));
 };
 
 const validateFiles = function(type, isFileExists, fileList, list, file) {
@@ -109,7 +108,7 @@ const organizeHead = function(isFileExists, func, args) {
   let files = args["files"].reduce(divideFiles, list);
 
   args["files"] = files["actualFile"];
-  let existingFile = getHead(func, args);
+  let existingFile = applyCommand(func, args, "head");
   let length = existingFile.length + files["error"].length;
   existingFile = putHeader(files["actualFile"], existingFile, length);
 
@@ -145,7 +144,7 @@ const extractTailCharacters = function(listOfCharacters, numberOfBytes) {
 exports.applyFunc = applyFunc;
 exports.extractContents = extractContents;
 exports.extractHeadLines = extractHeadLines;
-exports.getHead = getHead;
+exports.applyCommand = applyCommand;
 exports.extractHeadCharacters = extractHeadCharacters;
 exports.organizeHead = organizeHead;
 exports.findOptionError = findOptionError;
