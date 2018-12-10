@@ -1,3 +1,7 @@
+const revString = function(string) {
+  return string.split('').reverse().join('');
+}
+
 const extractContents = function(numberOfContents, delimeter, file) {
   let contents = file.split(delimeter);
   return contents.slice(0, numberOfContents).join(delimeter);
@@ -107,7 +111,7 @@ const organizeHead = function(isFileExists, func, args) {
 
 const getOption = function(option, args, argsList) {
   argsList[0][option[1]] = option.substr(2) || args[1];
-  option[2] || args.splice(0, 1);
+  option[2] || args.shift();
   args = args.slice(1);
   argsList.push(args);
   return argsList;
@@ -118,7 +122,7 @@ const extractHeadOption = function(args) {
   let argsList = [{ files: [] }];
 
   if (option == "--") {
-    return [ { files:[], n:10}, args.slice(1)];
+    return [{ files: [], n: 10 }, args.slice(1)];
   }
 
   if (option[0] == "-" && !isFinite(option[1])) {
@@ -126,15 +130,14 @@ const extractHeadOption = function(args) {
   }
 
   if (option[0] == "-" && isFinite(parseInt(option[1]))) {
-    return [ { files:[], n:option.substr(1)}, args.slice(1)];
+    return [{ files: [], n: option.substr(1) }, args.slice(1)];
   }
 
-  return [ { files:[], n:10}, args];
+  return [{ files: [], n: 10 }, args];
 };
 
 const extractHeadArgs = function(args) {
-  let userArgs = args.slice(2);
-  let extractOption = extractHeadOption(userArgs);
+  let extractOption = extractHeadOption(args);
   let argsList = extractOption[0];
   userArgs = extractOption[1];
   argsList["files"] = userArgs;
