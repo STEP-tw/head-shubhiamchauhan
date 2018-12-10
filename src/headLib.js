@@ -26,12 +26,12 @@ const putHeader = function(filesName, fileContent, length) {
   return contentWithLabel;
 };
 
-const extractLines = function(files, listOfLines, numberOfLines) {
+const extractHeadLines = function(files, listOfLines, numberOfLines) {
   let getLines = extractContents.bind(null, numberOfLines, "\n");
   return listOfLines.map(getLines);
 };
 
-const extractCharacters = function(fileName, listOfCharacters, numberOfBytes) {
+const extractHeadCharacters = function(fileName, listOfCharacters, numberOfBytes) {
   return listOfCharacters.map(characters =>
     characters.substring(0, numberOfBytes)
   );
@@ -41,8 +41,8 @@ const getHead = function(fnReferance, inputData) {
   let option = Object.keys(inputData)[1];
   let files = inputData.files;
   let head = {};
-  head["n"] = extractLines;
-  head["c"] = extractCharacters;
+  head["n"] = extractHeadLines;
+  head["c"] = extractHeadCharacters;
   let fileContents = applyFunc(fnReferance, files);
   return head[option](files, fileContents, +inputData[option]);
 };
@@ -147,9 +147,9 @@ const extractHeadArgs = function(args) {
 exports.applyFunc = applyFunc;
 exports.extractHeadArgs = extractHeadArgs;
 exports.extractContents = extractContents;
-exports.extractLines = extractLines;
+exports.extractHeadLines = extractHeadLines;
 exports.getHead = getHead;
-exports.extractCharacters = extractCharacters;
+exports.extractHeadCharacters = extractHeadCharacters;
 exports.organizeHead = organizeHead;
 exports.findOptionError = findOptionError;
 exports.insertError = insertError;

@@ -2,9 +2,9 @@ const assert = require('assert');
 const { applyFunc,
   extractHeadArgs,
   getHead,
-  extractLines,
+  extractHeadLines,
   extractContents,
-  extractCharacters,
+  extractHeadCharacters,
   insertError,
   putHeader,
   validateFiles,
@@ -94,7 +94,7 @@ describe("extractContents", function() {
   });
 });
 
-describe("extractLines", function() {
+describe("extractHeadLines", function() {
   let string1;
   let string2;
   let string3;
@@ -116,14 +116,14 @@ describe("extractLines", function() {
     result[0] = "The coins entered circulation";
     result[1] ="The coins were";
     result[2]= string3;
-    assert.deepEqual(extractLines(fileName1, [string1, string2, string3], 1), result);
+    assert.deepEqual(extractHeadLines(fileName1, [string1, string2, string3], 1), result);
   });
 
   it("should return 2 lines of both files string1 and string2 in an array for inputs numberOfLine = 2", function() {
     let result = [];
     result[0] = "The coins entered circulation\nAfter legal maneuvering";
     result[1] = string2;
-    assert.deepEqual(extractLines(fileName2, [string1, string2], 2), result);
+    assert.deepEqual(extractHeadLines(fileName2, [string1, string2], 2), result);
   });
 });
 
@@ -170,7 +170,7 @@ describe("getHead", function() {
   });
 });
 
-describe("extractCharacters", function() {
+describe("extractHeadCharacters", function() {
   let string1;
   let string2;
   let string3;
@@ -189,21 +189,21 @@ describe("extractCharacters", function() {
     result[0] = "T";
     result[1] = "T";
     result[2] = "S";
-    assert.deepEqual(extractCharacters(fileName1, [string1, string2, string3], 1), result);
+    assert.deepEqual(extractHeadCharacters(fileName1, [string1, string2, string3], 1), result);
   });
 
   it("should return 2 characters of both files string1 and string2 in an array for inputs numberOfBytes = 2", function() {
     let result = [];
     result[0] = "Th";
     result[1] = "Th";
-    assert.deepEqual(extractCharacters(fileName2, [string1, string2], 2), result);
+    assert.deepEqual(extractHeadCharacters(fileName2, [string1, string2], 2), result);
   });
 
   it("should return 10 characters of both files string1 and string2 with \\n in an array for inputs numberOfBytes = 10", function() {
     let result = [];
     result[0] = string1;
     result[1] = "The coins ";
-    assert.deepEqual(extractCharacters(fileName2, [string1, string2], 10), result);
+    assert.deepEqual(extractHeadCharacters(fileName2, [string1, string2], 10), result);
   });
 });
 
