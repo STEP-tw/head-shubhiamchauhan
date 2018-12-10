@@ -98,23 +98,6 @@ const findOptionError = function(args, command) {
   return "";
 };
 
-const organizeHead = function(isFileExists, func, args) {
-  if (findOptionError(args, "head")) {
-    return findOptionError(args, "head");
-  }
-
-  let list = { actualFile: [], error: [] };
-  let divideFiles = validateFiles.bind(null, "head", isFileExists, args["files"]);
-  let files = args["files"].reduce(divideFiles, list);
-
-  args["files"] = files["actualFile"];
-  let existingFile = applyCommand(func, args, "head");
-  let length = existingFile.length + files["error"].length;
-  existingFile = putHeader(files["actualFile"], existingFile, length);
-
-  return files["error"].reduce(insertError, existingFile).join("\n");
-};
-
 const revLines = function(listOfLines) {
   let revLine = revString.bind(null, "\n");
   return listOfLines.map(revLine);
@@ -141,17 +124,33 @@ const extractTailCharacters = function(listOfCharacters, numberOfBytes) {
   return revCharacters(revTailChars);
 };
 
+const organizeCommandResult = function(isFileExists, func, args, command) {
+  if (findOptionError(args, command)) {
+    return findOptionError(args, command);
+  }
+
+  let list = { actualFile: [], error: [] };
+  let divideFiles = validateFiles.bind(null, command, isFileExists, args["files"]);
+  let files = args["files"].reduce(divideFiles, list);
+
+  args["files"] = files["actualFile"];
+  let existingFile = applyCommand(func, args, command);
+  let length = existingFile.length + files["error"].length;
+  existingFile = putHeader(files["actualFile"], existingFile, length);
+
+  return files["error"].reduce(insertError, existingFile).join("\n");
+};
+
 exports.applyFunc = applyFunc;
 exports.extractContents = extractContents;
 exports.extractHeadLines = extractHeadLines;
 exports.applyCommand = applyCommand;
 exports.extractHeadCharacters = extractHeadCharacters;
-exports.organizeHead = organizeHead;
 exports.findOptionError = findOptionError;
 exports.insertError = insertError;
 exports.putHeader = putHeader;
 exports.validateFiles = validateFiles;
-exports.organizeHead = organizeHead;
 exports.revString = revString;
 exports.extractTailLines = extractTailLines;
 exports.extractTailCharacters = extractTailCharacters;
+exports.organizeCommandResult = organizeCommandResult;

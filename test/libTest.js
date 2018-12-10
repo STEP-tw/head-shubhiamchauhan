@@ -7,7 +7,7 @@ const { applyFunc,
   insertError,
   putHeader,
   validateFiles,
-  organizeHead,
+  organizeCommandResult,
   revString,
   extractTailLines,
   extractTailCharacters,
@@ -291,28 +291,30 @@ describe("validateFiles", function() {
   });
 });
 
-describe("organizeHead", function() {
-  it("should return the given file first 5 characters for input getTrue, getString and args.c=5", function() {
-    let args = { files:["prefix"], c:5 };
-    assert.deepEqual(organizeHead(getTrue, getString, args), "prefi"); 
-  });
+describe("organizeCommandResult", function() {
+  describe("for head command", function() {
+    it("should return the given file first 5 characters for input getTrue, getString and args.c=5", function() {
+      let args = { files:["prefix"], c:5 };
+      assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), "prefi"); 
+    });
 
-  it("should return every file first line for input getTrue, getString and args.n = 1", function() {
-    let args = { files:["prefix", "suffix"], n:1 };
-    let result = "==> prefix <==\nprefix\n==> suffix <==\nsuffix"
-    assert.deepEqual(organizeHead(getTrue, getString, args), result); 
-  });
+    it("should return every file first line for input getTrue, getString and args.n = 1", function() {
+      let args = { files:["prefix", "suffix"], n:1 };
+      let result = "==> prefix <==\nprefix\n==> suffix <==\nsuffix"
+      assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), result); 
+    });
 
-  it("should throw a line count error for option having -n and undefined count", function() {
-    let args = {files:["file1","file2"],"n":undefined};
-    let result = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
-    assert.deepEqual(organizeHead(getTrue, getString, args), result);
-  });
+    it("should throw a line count error for option having -n and undefined count", function() {
+      let args = {files:["file1","file2"],"n":undefined};
+      let result = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
+      assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), result);
+    });
 
-  it("should throw error for arg.files having missing file", function() {
-    let args = { files:["prefix"], c:5 };
-    let result = "head: prefix: No such file or directory";
-    assert.deepEqual(organizeHead(getFalse, getString, args), result); 
+    it("should throw error for arg.files having missing file", function() {
+      let args = { files:["prefix"], c:5 };
+      let result = "head: prefix: No such file or directory";
+      assert.deepEqual(organizeCommandResult(getFalse, getString, args, "head"), result); 
+    });
   });
 });
 
@@ -325,7 +327,7 @@ describe("revString", function() {
     assert.equal(revString("", "srs"), "srs");
   });
 
-it("should return areeh for input heera", function() {
+  it("should return areeh for input heera", function() {
     assert.equal(revString("", "heera"), "areeh");
   });
 });
