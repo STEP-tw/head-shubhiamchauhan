@@ -8,6 +8,7 @@ const { applyFunc,
   putHeader,
   validateFiles,
   organizeHead,
+  revString,
   findOptionError } = require('../src/lib.js');
 
 const getString = function(string){
@@ -289,5 +290,19 @@ describe("organizeHead", function() {
     let args = { files:["prefix"], c:5 };
     let result = "head: prefix: No such file or directory";
     assert.deepEqual(organizeHead(getFalse, getString, args), result); 
+  });
+});
+
+describe("revString", function() {
+  it("should return an empty string for input empty string", function() {
+    assert.equal(revString(""), "");
+  });
+
+  it("should return same string for input as a pallindrome string", function() {
+    assert.equal(revString("srs"), "srs");
+  });
+
+it("should return areeh for input heera", function() {
+    assert.equal(revString("heera"), "areeh");
   });
 });
