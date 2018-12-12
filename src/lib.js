@@ -92,15 +92,17 @@ const findOptionError = function(args, command) {
 };
 
 const extractTailLines = function(listOfLines, numberOfLines) {
-  return listOfLines.map(lines => 
-    lines.split('\n').slice(-numberOfLines).join('\n')
-  );
+  return listOfLines.map(lines => {
+    let length = lines.split('\n').length - numberOfLines;
+    return lines.split('\n').slice(length).join('\n');
+  });
 };
 
 const extractTailCharacters = function(listOfCharacters, numberOfBytes) {
-  return listOfCharacters.map(characters =>
-    characters.slice(-numberOfBytes)
-  );
+  return listOfCharacters.map(characters => {
+    let length = characters.length - numberOfBytes;
+    return characters.slice(length);
+  });
 };
 
 const organizeCommandResult = function(isFileExists, func, args, command) {
