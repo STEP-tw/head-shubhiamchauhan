@@ -73,19 +73,12 @@ const findOptionError = function(args, command) {
     tail:"usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]"};
 
   if (!["n", "c"].includes(type)) {
-    return (
-      command + ": illegal option -- " +
-      type +
-      "\n" + usage[command]
-    );
+    return command + ": illegal option -- " + type + "\n" + usage[command];
   }
 
   if (args[type] == undefined) {
-    return (
-      command + ": option requires an argument -- " +
-      type +
-      "\n" + usage[command]
-    );
+    let actualError = ": option requires an argument -- ";
+    return command + actualError + type + "\n" + usage[command];
   }
 
   if (parseInt(args[type]) != args[type]) {
@@ -98,30 +91,16 @@ const findOptionError = function(args, command) {
   return "";
 };
 
-const revLines = function(listOfLines) {
-  let revLine = revString.bind(null, "\n");
-  return listOfLines.map(revLine);
-}
-
-const revCharacters = function(listOfLines) {
-  return listOfLines.map(lines => 
-    lines.split("\n").reverse().map(line => 
-      line.split('').reverse().join('')
-    ).join('\n')
-  );
-}
-
 const extractTailLines = function(listOfLines, numberOfLines) {
-  let getLines = extractContents.bind(null, numberOfLines, "\n");
-  let listOfRevLines = revLines(listOfLines).map(getLines);
-  return revLines(listOfRevLines);
+  return listOfLines.map(lines => 
+    lines.split('\n').slice(-numberOfLines).join('\n')
+  );
 };
 
 const extractTailCharacters = function(listOfCharacters, numberOfBytes) {
-  let revTailChars = revCharacters(listOfCharacters).map(characters =>
-    characters.substring(0, numberOfBytes)
+  return listOfCharacters.map(characters =>
+    characters.slice(-numberOfBytes)
   );
-  return revCharacters(revTailChars);
 };
 
 const organizeCommandResult = function(isFileExists, func, args, command) {
@@ -141,16 +120,18 @@ const organizeCommandResult = function(isFileExists, func, args, command) {
   return files["error"].reduce(insertError, existingFile).join("\n");
 };
 
-exports.applyFunc = applyFunc;
-exports.extractContents = extractContents;
-exports.extractHeadLines = extractHeadLines;
-exports.applyCommand = applyCommand;
-exports.extractHeadCharacters = extractHeadCharacters;
-exports.findOptionError = findOptionError;
-exports.insertError = insertError;
-exports.putHeader = putHeader;
-exports.validateFiles = validateFiles;
-exports.revString = revString;
-exports.extractTailLines = extractTailLines;
-exports.extractTailCharacters = extractTailCharacters;
-exports.organizeCommandResult = organizeCommandResult;
+module.exports = {
+  applyFunc,
+  extractContents,
+  extractHeadLines,
+  applyCommand,
+  extractHeadCharacters,
+  findOptionError,
+  insertError,
+  putHeader,
+  validateFiles,
+  revString,
+  extractTailLines,
+  extractTailCharacters,
+  organizeCommandResult
+};
