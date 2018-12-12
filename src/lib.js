@@ -93,15 +93,15 @@ const findOptionError = function(args, command) {
 
 const extractTailLines = function(listOfLines, numberOfLines) {
   return listOfLines.map(lines => {
-    let length = lines.split('\n').length - numberOfLines;
-    return lines.split('\n').slice(length).join('\n');
+    if(numberOfLines == 0) { return ""; };
+    return lines.split('\n').slice(-numberOfLines).join('\n');
   });
 };
 
 const extractTailCharacters = function(listOfCharacters, numberOfBytes) {
   return listOfCharacters.map(characters => {
-    let length = characters.length - numberOfBytes;
-    return characters.slice(length);
+    if(numberOfBytes == 0) { return ""; };
+    return characters.slice(-numberOfBytes);
   });
 };
 
