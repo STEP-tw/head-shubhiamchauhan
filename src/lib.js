@@ -9,39 +9,40 @@ const applyFunc = function(fnReferance, files) {
   return files.map(file => fnReferance(file, "utf8"));
 };
 
-const putHeader = function(filesName, fileContent, length) {
+const putHeader = function(fileNames, fileContent, length) {
   let contentWithLabel = [];
 
   if (length < 2) {
     return fileContent;
   }
 
-  for (let index = 0; index < filesName.length; index++) {
-    let tag = "==> " + filesName[index] + " <==";
+  for (let index = 0; index < fileNames.length; index++) {
+    let tag = "==> " + fileNames[index] + " <==";
     contentWithLabel[index] = tag + "\n" + fileContent[index];
   }
 
   return contentWithLabel;
 };
 
-const extractHeadLines = function(listOfLines, numberOfLines) {
+const extractHeadLines = function(listOfFileContents, numberOfLines) {
   let getLines = extractContents.bind(null, numberOfLines, "\n");
-  return listOfLines.map(getLines);
+  return listOfFileContents.map(getLines);
 };
 
-const extractHeadCharacters = function(listOfCharacters, numberOfBytes) {
-  return listOfCharacters.map(characters =>
+const extractHeadCharacters = function(listOfFileContents, numberOfBytes) {
+  return listOfFileContents.map(characters =>
     characters.substring(0, numberOfBytes)
   );
 };
 
-const applyCommand = function(fnReferance, inputData, command) {
+const applyCommand = function(reader, inputData, command) {
+  let commandCall = { head: { n: extractHeadLines, c: extractHeadCharacters},
+    tail: { n: extractTailLines, c: extractTailCharacters} };
+
   let option = Object.keys(inputData)[1];
   let files = inputData.files;
-  let callCommand = { head: { n: extractHeadLines, c: extractHeadCharacters},
-    tail: { n: extractTailLines, c: extractTailCharacters} };
-  let fileContents = applyFunc(fnReferance, files);
-  return callCommand[command][option](fileContents, Math.abs(inputData[option]));
+  let fileContents = applyFunc(reader, files);
+  return commandCall[command][option](fileContents, Math.abs(inputData[option]));
 };
 
 const validateFiles = function(type, isFileExists, fileList, list, file) {
@@ -58,8 +59,8 @@ const validateFiles = function(type, isFileExists, fileList, list, file) {
 const insertError = function(validFiles, errorEntries) {
   let index = errorEntries[1];
   let firstPart = validFiles.slice(0, index);
-  firstPart.push(errorEntries[0]);
   let secondPart = validFiles.slice(index);
+  firstPart.push(errorEntries[0]);
   return firstPart.concat(secondPart);
 };
 
