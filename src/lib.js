@@ -41,15 +41,15 @@ const applyCommand = function(reader, inputData, command) {
   return commandCall[command][option](fileContents, Math.abs(inputData[option]));
 };
 
-const validateFiles = function(type, isFileExists, fileList, list, file) {
+const validateFiles = function(type, isFileExists, fileList, validatedFiles, file) {
   if (isFileExists(file)) {
-    list["actualFile"].push(file);
-    return list;
+    validatedFiles["actualFile"].push(file);
+    return validatedFiles;
   }
 
   let error = type + ": " + file + ": No such file or directory";
-  list["error"].push([error, fileList.indexOf(file)]);
-  return list;
+  validatedFiles["error"].push([error, fileList.indexOf(file)]);
+  return validatedFiles;
 };
 
 const insertError = function(validFiles, errorEntries) {
@@ -79,16 +79,16 @@ const organizeCommandResult = function(isFileExists, func, args, command) {
     return findOptionError(args, command);
   }
 
-  let list = { actualFile: [], error: [] };
-  let divideFiles = validateFiles.bind(null, command, isFileExists, args["files"]);
-  let files = args["files"].reduce(divideFiles, list);
-  args["files"] = files["actualFile"];
+  let validatedFiles = { actualFile: [], error: [] };
+  let getValidatedFiles = validateFiles.bind(null, command, isFileExists, args["files"]);
+  validatedFiles = args["files"].reduce(getValidatedFiles, validatedFiles);
+  args["files"] = validatedFiles["actualFile"];
 
   let existingFile = applyCommand(func, args, command);
-  let length = existingFile.length + files["error"].length;
-  existingFile = putHeader(files["actualFile"], existingFile, length);
+  let length = existingFile.length + validatedFiles["error"].length;
+  existingFile = putHeader(validatedFiles["actualFile"], existingFile, length);
 
-  return files["error"].reduce(insertError, existingFile).join("\n");
+  return validatedFiles["error"].reduce(insertError, existingFile).join("\n");
 };
 
 module.exports = {
