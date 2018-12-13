@@ -1,6 +1,4 @@
-const revString = function(delimeter,string) {
-  return string.split(delimeter).reverse().join(delimeter);
-}
+const { findOptionError } = require('./errorLib.js');
 
 const extractContents = function(numberOfContents, delimeter, file) {
   let contents = file.split(delimeter);
@@ -65,32 +63,6 @@ const insertError = function(validFiles, errorEntries) {
   return firstPart.concat(secondPart);
 };
 
-const findOptionError = function(args, command) {
-  let type = Object.keys(args)[1];
-  let countError = { head:{ "n": "line count", "c": "byte count" },
-    tail:{ "n":"offset", "c":"offset"} };
-  let usage = { head:"usage: head [-n lines | -c bytes] [file ...]",
-    tail:"usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]"};
-
-  if (!["n", "c"].includes(type)) {
-    return command + ": illegal option -- " + type + "\n" + usage[command];
-  }
-
-  if (args[type] == undefined) {
-    let actualError = ": option requires an argument -- ";
-    return command + actualError + type + "\n" + usage[command];
-  }
-
-  if (parseInt(args[type]) != args[type]) {
-    return command + ": illegal " + countError[command][type] + " -- " + args[type];
-  }
-
-  if(args[type] < 1 && command == "head") {
-    return "head: illegal " + countError[command][type] + " -- " + args[type];
-  }
-  return "";
-};
-
 const extractTailLines = function(listOfLines, numberOfLines) {
   return listOfLines.map(lines => {
     if(numberOfLines == 0) { return ""; };
@@ -132,7 +104,6 @@ module.exports = {
   insertError,
   putHeader,
   validateFiles,
-  revString,
   extractTailLines,
   extractTailCharacters,
   organizeCommandResult

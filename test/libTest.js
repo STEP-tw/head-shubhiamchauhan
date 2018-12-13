@@ -8,7 +8,6 @@ const { applyFunc,
   putHeader,
   validateFiles,
   organizeCommandResult,
-  revString,
   extractTailLines,
   extractTailCharacters,
   findOptionError } = require('../src/lib.js');
@@ -334,20 +333,6 @@ describe("organizeCommandResult", function() {
       let result = "tail: prefix: No such file or directory";
       assert.deepEqual(organizeCommandResult(getFalse, getString, args, "tail"), result); 
     });
-  });
-});
-
-describe("revString", function() {
-  it("should return an empty string for input empty string", function() {
-    assert.equal(revString("",""), "");
-  });
-
-  it("should return same string for input as a pallindrome string", function() {
-    assert.equal(revString("", "srs"), "srs");
-  });
-
-  it("should return areeh for input heera", function() {
-    assert.equal(revString("", "heera"), "areeh");
   });
 });
 
