@@ -12,7 +12,7 @@ const applyFunc = function(fnReferance, files) {
 const putHeader = function(fileNames, fileContent, length) {
   let contentWithLabel = [];
   if (length < 2) return fileContent;
-  
+
   for (let index = 0; index < fileNames.length; index++) {
     let tag = "==> " + fileNames[index] + " <==";
     contentWithLabel[index] = tag + "\n" + fileContent[index];
@@ -62,15 +62,15 @@ const insertError = function(validFiles, errorEntries) {
 
 const extractTailLines = function(listOfLines, numberOfLines) {
   return listOfLines.map(lines => {
-    if(numberOfLines == 0) { return ""; };
-    return lines.split('\n').slice(-numberOfLines).join('\n');
+    let count = Math.max(0, (lines.split('\n').length - numberOfLines));
+    return lines.split('\n').slice(count).join('\n');
   });
 };
 
 const extractTailCharacters = function(listOfCharacters, numberOfBytes) {
   return listOfCharacters.map(characters => {
-    if(numberOfBytes == 0) { return ""; };
-    return characters.slice(-numberOfBytes);
+    let count = Math.max(0, (characters.length - numberOfBytes));
+    return characters.slice(count);
   });
 };
 
