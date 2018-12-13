@@ -11,16 +11,12 @@ const applyFunc = function(fnReferance, files) {
 
 const putHeader = function(fileNames, fileContent, length) {
   let contentWithLabel = [];
-
-  if (length < 2) {
-    return fileContent;
-  }
-
+  if (length < 2) return fileContent;
+  
   for (let index = 0; index < fileNames.length; index++) {
     let tag = "==> " + fileNames[index] + " <==";
     contentWithLabel[index] = tag + "\n" + fileContent[index];
   }
-
   return contentWithLabel;
 };
 
@@ -86,8 +82,8 @@ const organizeCommandResult = function(isFileExists, func, args, command) {
   let list = { actualFile: [], error: [] };
   let divideFiles = validateFiles.bind(null, command, isFileExists, args["files"]);
   let files = args["files"].reduce(divideFiles, list);
-
   args["files"] = files["actualFile"];
+
   let existingFile = applyCommand(func, args, command);
   let length = existingFile.length + files["error"].length;
   existingFile = putHeader(files["actualFile"], existingFile, length);
