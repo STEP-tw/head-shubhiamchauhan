@@ -303,9 +303,15 @@ describe("organizeCommandResult", function() {
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), result); 
     });
 
-    it("should throw a line count error for option having -n and undefined count", function() {
+    it("should throw no arguments error for option having -n and undefined count", function() {
       let args = {files:["file1","file2"],"n":undefined};
       let result = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
+      assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), result);
+    });
+
+    it("should throw no arguments error for option having -c and undefined count", function() {
+      let args = {files:["file1","file2"],"c":undefined};
+      let result = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), result);
     });
 
@@ -332,6 +338,20 @@ describe("organizeCommandResult", function() {
       let args = { files:["prefix"], c:5 };
       let result = "tail: prefix: No such file or directory";
       assert.deepEqual(organizeCommandResult(getFalse, getString, args, "tail"), result); 
+    });
+
+    it("should throw no arguments error for option having -n and undefined count", function() {
+      let args = {files:["file1","file2"],"n":undefined};
+      let result = "tail: option requires an argument -- n\n";
+      result += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
+      assert.deepEqual(organizeCommandResult(getTrue, getString, args, "tail"), result);
+    });
+
+    it("should throw no arguments error for option having -c and undefined count", function() {
+      let args = {files:["file1","file2"],"c":undefined};
+      let result = "tail: option requires an argument -- c\n";
+      result += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
+      assert.deepEqual(organizeCommandResult(getTrue, getString, args, "tail"), result);
     });
   });
 });
