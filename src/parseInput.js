@@ -14,7 +14,7 @@ const extractUsrOptions = function (args) {
     return [{ files: [], n: 10 }, args.slice(1)];
   }
 
-  if (option[0] == "-" && !isFinite(option[1])) {
+  if (option[0] == "-" && !isFinite(option.substr(1))) {
     return getOption(option, args, argsList);
   }
 
