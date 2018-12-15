@@ -60,21 +60,21 @@ const insertError = function(validFiles, errorEntries) {
   return firstPart.concat(secondPart);
 };
 
-const extractTailLines = function(listOfLines, numberOfLines) {
-  return listOfLines.map(lines => {
+const extractTailLines = function(listOfFileContents, numberOfLines) {
+  return listOfFileContents.map(lines => {
     let count = Math.max(0, (lines.split('\n').length - numberOfLines));
     return lines.split('\n').slice(count).join('\n');
   });
 };
 
-const extractTailCharacters = function(listOfCharacters, numberOfBytes) {
-  return listOfCharacters.map(characters => {
+const extractTailCharacters = function(listOfFileContents, numberOfBytes) {
+  return listOfFileContents.map(characters => {
     let count = Math.max(0, (characters.length - numberOfBytes));
     return characters.slice(count);
   });
 };
 
-const organizeCommandResult = function(isFileExists, func, args, command) {
+const organizeCommandResult = function(isFileExists, reader, args, command) {
   if (findOptionError(args, command)) {
     return findOptionError(args, command);
   }
@@ -84,7 +84,7 @@ const organizeCommandResult = function(isFileExists, func, args, command) {
   validatedFiles = args["files"].reduce(getValidatedFiles, validatedFiles);
   args["files"] = validatedFiles["actualFile"];
 
-  let existingFile = applyCommand(func, args, command);
+  let existingFile = applyCommand(reader, args, command);
   let length = existingFile.length + validatedFiles["error"].length;
   existingFile = putHeader(validatedFiles["actualFile"], existingFile, length);
 
