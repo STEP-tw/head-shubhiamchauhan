@@ -5,7 +5,8 @@ const getOption = function (option, args, argsList) {
   argsList.push(args);
   return argsList;
 };
-const extractUsrOptions = function (args) {
+
+const extractUserOptions = function (args) {
   let option = args[0];
   let argsList = [{ files: [] }];
 
@@ -24,12 +25,12 @@ const extractUsrOptions = function (args) {
   return [{ files: [], n: 10 }, args];
 };
 
-const extractUsrArgs = function (args) {
-  let extractOption = extractUsrOptions(args);
+const extractUserArgs = function (args) {
+  let extractOption = extractUserOptions(args);
   let argsList = extractOption[0];
   userArgs = extractOption[1];
   argsList["files"] = userArgs;
   return argsList;
 
 };
-exports.extractUsrArgs = extractUsrArgs;
+exports.extractUserArgs = extractUserArgs;
