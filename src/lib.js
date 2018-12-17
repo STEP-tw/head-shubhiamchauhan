@@ -1,15 +1,15 @@
 const { findOptionError } = require('./errorLib.js');
 
-const extractContents = function(numberOfContents, delimeter, file) {
+const extractContents = function (numberOfContents, delimeter, file) {
   let contents = file.split(delimeter);
   return contents.slice(0, numberOfContents).join(delimeter);
 };
 
-const applyFunc = function(fnReferance, files) {
+const applyFunc = function (fnReferance, files) {
   return files.map(file => fnReferance(file, "utf8"));
 };
 
-const putHeader = function(fileNames, fileContent, length) {
+const putHeader = function (fileNames, fileContent, length) {
   let contentWithLabel = [];
   if (length < 2) return fileContent;
 
@@ -20,20 +20,22 @@ const putHeader = function(fileNames, fileContent, length) {
   return contentWithLabel;
 };
 
-const extractHeadLines = function(listOfFileContents, numberOfLines) {
+const extractHeadLines = function (listOfFileContents, numberOfLines) {
   let getLines = extractContents.bind(null, numberOfLines, "\n");
   return listOfFileContents.map(getLines);
 };
 
-const extractHeadCharacters = function(listOfFileContents, numberOfBytes) {
+const extractHeadCharacters = function (listOfFileContents, numberOfBytes) {
   return listOfFileContents.map(characters =>
     characters.substring(0, numberOfBytes)
   );
 };
 
-const applyCommand = function(reader, inputData, command) {
-  let commandCall = { head: { n: extractHeadLines, c: extractHeadCharacters},
-    tail: { n: extractTailLines, c: extractTailCharacters} };
+const applyCommand = function (reader, inputData, command) {
+  let commandCall = {
+    head: { n: extractHeadLines, c: extractHeadCharacters },
+    tail: { n: extractTailLines, c: extractTailCharacters }
+  };
 
   let option = Object.keys(inputData)[1];
   let files = inputData.files;
@@ -41,7 +43,7 @@ const applyCommand = function(reader, inputData, command) {
   return commandCall[command][option](fileContents, Math.abs(inputData[option]));
 };
 
-const validateFiles = function(type, isFileExists, fileList, validatedFiles, file) {
+const validateFiles = function (type, isFileExists, fileList, validatedFiles, file) {
   if (isFileExists(file)) {
     validatedFiles["actualFile"].push(file);
     return validatedFiles;
@@ -52,7 +54,7 @@ const validateFiles = function(type, isFileExists, fileList, validatedFiles, fil
   return validatedFiles;
 };
 
-const insertError = function(validFiles, errorEntries) {
+const insertError = function (validFiles, errorEntries) {
   let index = errorEntries[1];
   let firstPart = validFiles.slice(0, index);
   let secondPart = validFiles.slice(index);
@@ -60,21 +62,21 @@ const insertError = function(validFiles, errorEntries) {
   return firstPart.concat(secondPart);
 };
 
-const extractTailLines = function(listOfFileContents, numberOfLines) {
+const extractTailLines = function (listOfFileContents, numberOfLines) {
   return listOfFileContents.map(lines => {
     let count = Math.max(0, (lines.split('\n').length - numberOfLines));
     return lines.split('\n').slice(count).join('\n');
   });
 };
 
-const extractTailCharacters = function(listOfFileContents, numberOfBytes) {
+const extractTailCharacters = function (listOfFileContents, numberOfBytes) {
   return listOfFileContents.map(characters => {
     let count = Math.max(0, (characters.length - numberOfBytes));
     return characters.slice(count);
   });
 };
 
-const organizeCommandResult = function(isFileExists, reader, args, command) {
+const organizeCommandResult = function (isFileExists, reader, args, command) {
   if (findOptionError(args, command)) {
     return findOptionError(args, command);
   }

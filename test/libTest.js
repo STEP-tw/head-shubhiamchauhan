@@ -299,7 +299,7 @@ describe("putHeader", function () {
     assert.deepEqual(putHeader(headers, contents, 2), result);
   });
 
-  it("should return thw second array if last arg<2", function () {
+  it("should return the second array if last arg<2", function () {
     let headers = ["file1", "file2"];
     let contents = ["something"];
     assert.deepEqual(putHeader(headers, contents, 1), contents);
