@@ -14,10 +14,10 @@
     * applyFunc
 - [x] 2. Poor variable name everywhere like
     *string,list,fileList
-3. You can use small strings for testing
-4. Poor file names for testing , like
+- [x] 3. You can use small strings for testing
+- [x] 4. Poor file names for testing , like
     * string1,string2,...
-5. Poor testing files for applyCommand
+- [x] 5. Poor testing files for applyCommand
 6. You can add more test cases for findOptionError()
     * options like --
 7. You can group your tests

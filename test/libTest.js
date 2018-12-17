@@ -1,5 +1,5 @@
-const assert = require('assert');
-const {
+let assert = require('assert');
+let {
   applyCommand,
   extractHeadLines,
   extractContents,
@@ -12,13 +12,13 @@ const {
   extractTailCharacters,
   findOptionError } = require('../src/lib.js');
 
-const getString = function (string) {
+let getString = function (string) {
   return string;
 };
 
-const getTrue = (x) => true;
-const getFalse = (x) => false;
-const doubleString = function (string) {
+let getTrue = (x) => true;
+let getFalse = (x) => false;
+let doubleString = function (string) {
   return string + "\n" + string;
 }
 
@@ -65,111 +65,119 @@ describe("extractHeadLines", function () {
 });
 
 describe("applyCommand", function () {
-  let string1;
-  let string2;
+  let elevenAlphabets;
+  let oneToFifteen;
   beforeEach('', function () {
-    string1 = "string1";
-    string2 = "string2";
+    elevenAlphabets = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK";
+    oneToFifteen = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15";
   });
   describe("for head command", function () {
-    it("should return first line of both files string1 and string2 in an array for input.n = 1", function () {
-      let expectedOutput = [];
-      expectedOutput[0] = "string1";
-      expectedOutput[1] = "string2";
-      let input = { files: [string1, string2], n: 1 };
-      assert.deepEqual(applyCommand(getString, input, "head"), expectedOutput);
+    describe("for option n", function () {
+      it("should return first line of both files elevenAlphabets and oneToFifteen in an array for input.n = 1", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "A";
+        expectedOutput[1] = "1";
+        let input = { files: [elevenAlphabets, oneToFifteen], n: 1 };
+        assert.deepEqual(applyCommand(getString, input, "head"), expectedOutput);
+      });
+
+      it("should return first 2 lines of both files elevenAlphabets and oneToFifteen in an array for input.n = 2", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "A\nB";
+        expectedOutput[1] = "1\n2";
+        let input = { files: [elevenAlphabets, oneToFifteen], n: 2 };
+        assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
+      });
     });
 
-    it("should return first 2 lines of both files string1 and string2 in an array for input.n = 2", function () {
-      let expectedOutput = [];
-      expectedOutput[0] = string1 + "\n" + string1;
-      expectedOutput[1] = string2 + "\n" + string2;
-      let input = { files: [string1, string2], n: 2 };
-      assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
-    });
+    describe("for option c", function () {
+      it("should return first character of both files elevenAlphabets and oneToFifteen in an array for input.c = 1", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "A";
+        expectedOutput[1] = "1";
+        let input = { files: [elevenAlphabets, oneToFifteen], c: 1 };
+        assert.deepEqual(applyCommand(getString, input, "head"), expectedOutput);
+      });
 
-    it("should return first character of both files string1 and string2 in an array for input.c = 1", function () {
-      let expectedOutput = [];
-      expectedOutput[0] = "s";
-      expectedOutput[1] = "s";
-      let input = { files: [string1, string2], c: 1 };
-      assert.deepEqual(applyCommand(getString, input, "head"), expectedOutput);
-    });
-
-    it("should return first 8 characters of both files string1 and string2 in an array for input.c = 8", function () {
-      let expectedOutput = [];
-      expectedOutput[0] = "string1" + "\n";
-      expectedOutput[1] = "string2" + "\n";
-      let input = { files: [string1, string2], c: 8 };
-      assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
+      it("should return first 8 characters of both files elevenAlphabets and oneToFifteen in an array for input.c = 8", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "A\nB\nC\nD\n";
+        expectedOutput[1] = "1\n2\n3\n4\n";
+        let input = { files: [elevenAlphabets, oneToFifteen], c: 8 };
+        assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
+      });
     });
   });
 
   describe("for tail command", function () {
-    it("should return last line of both files string1 and string2 in an array for input.n = 1", function () {
-      let expectedOutput = [];
-      expectedOutput[0] = "string1";
-      expectedOutput[1] = "string2";
-      let input = { files: [string1, string2], n: 1 };
-      assert.deepEqual(applyCommand(getString, input, "tail"), expectedOutput);
+    describe("for option n", function () {
+      it("should return last line of both files elevenAlphabets and oneToFifteen in an array for input.n = 1", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "K";
+        expectedOutput[1] = "15";
+        let input = { files: [elevenAlphabets, oneToFifteen], n: 1 };
+        assert.deepEqual(applyCommand(getString, input, "tail"), expectedOutput);
+      });
+
+      it("should return last 2 lines of both files elevenAlphabets and oneToFifteen in an array for input.n = 2", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "J\nK";
+        expectedOutput[1] = "14\n15";
+        let input = { files: [elevenAlphabets, oneToFifteen], n: 2 };
+        assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
+      });
     });
 
-    it("should return last 2 lines of both files string1 and string2 in an array for input.n = 2", function () {
-      let expectedOutput = [];
-      expectedOutput[0] = "string1" + "\n" + "string1";
-      expectedOutput[1] = "string2" + "\n" + "string2";
-      let input = { files: [string1, string2], n: 2 };
-      assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
-    });
+    describe("for option c", function () {
+      it("should return last character of both files elevenAlphabets and oneToFifteen in an array for input.c = 1", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "E";
+        expectedOutput[1] = "5";
+        let input = { files: ["ABCDE", "12345"], c: 1 };
+        assert.deepEqual(applyCommand(getString, input, "tail"), expectedOutput);
+      });
 
-    it("should return last character of both files string1 and string2 in an array for input.c = 1", function () {
-      let expectedOutput = [];
-      expectedOutput[0] = "1";
-      expectedOutput[1] = "2";
-      let input = { files: [string1, string2], c: 1 };
-      assert.deepEqual(applyCommand(getString, input, "tail"), expectedOutput);
-    });
-
-    it("should return last 8 characters of both files string1 and string2 in an array for input.c = 8", function () {
-      let expectedOutput = [];
-      expectedOutput[0] = "\n" + "string1" ;
-      expectedOutput[1] = "\n" + "string2" ;
-      let input = { files: [string1, string2], c: 8 };
-      assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
+      it("should return last 8 characters of both files elevenAlphabets and oneToFifteen in an array for input.c = 8", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "DEF\nGHJK";
+        expectedOutput[1] = "23456789";
+        let input = { files: ["ABCDEF\nGHJK", "123456789"], c: 8 };
+        assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
+      });
     });
   });
 });
 
 describe("extractHeadCharacters", function () {
-  let string1;
-  let string2;
-  let string3;
+  let file1;
+  let file2;
+  let file3;
   beforeEach('', function () {
-    string1 = "The coins\n";
-    string2 = "The coins were\n";
-    string3 = "Something is something";
+    file1 = "The coins\n";
+    file2 = "The coins were\n";
+    file3 = "Something is something";
   });
 
-  it("should return 1 character of files string1, string2 and string3 in an array for inputs numberOfBytes = 1", function () {
+  it("should return 1 character of files file1, file2 and file3 in an array for inputs numberOfBytes = 1", function () {
     let expectedOutput = [];
     expectedOutput[0] = "T";
     expectedOutput[1] = "T";
     expectedOutput[2] = "S";
-    assert.deepEqual(extractHeadCharacters([string1, string2, string3], 1), expectedOutput);
+    assert.deepEqual(extractHeadCharacters([file1, file2, file3], 1), expectedOutput);
   });
 
-  it("should return 2 characters of both files string1 and string2 in an array for inputs numberOfBytes = 2", function () {
+  it("should return 2 characters of both files file1 and file2 in an array for inputs numberOfBytes = 2", function () {
     let expectedOutput = [];
     expectedOutput[0] = "Th";
     expectedOutput[1] = "Th";
-    assert.deepEqual(extractHeadCharacters([string1, string2], 2), expectedOutput);
+    assert.deepEqual(extractHeadCharacters([file1, file2], 2), expectedOutput);
   });
 
-  it("should return 10 characters of both files string1 and string2 with \\n in an array for inputs numberOfBytes = 10", function () {
+  it("should return 10 characters of both files file1 and file2 with \\n in an array for inputs numberOfBytes = 10", function () {
     let expectedOutput = [];
     expectedOutput[0] = "The coins\n";
     expectedOutput[1] = "The coins ";
-    assert.deepEqual(extractHeadCharacters([string1, string2], 10), expectedOutput);
+    assert.deepEqual(extractHeadCharacters([file1, file2], 10), expectedOutput);
   });
 });
 
@@ -382,62 +390,60 @@ describe("organizeCommandResult", function () {
 });
 
 describe("extractTailLines", function () {
-  let string1;
-  let string2;
-  let string3;
+  let elevenAlphabets;
+  let oneToFifteen;
+  let vowels;
   beforeEach('', function () {
-    string1 = "The coins entered circulation\n"
-    string1 += "After legal maneuvering\nthe government\nThe coins were\nCongress called in the coins";
-
-    string2 = "The coins were\nCongress called in the coins";
-    string3 = "The coins entered circulation";
+    elevenAlphabets = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK";
+    oneToFifteen = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15";
+    vowels = "a\ne\ni\no\nu";
   });
 
-  it("should return last line of files string1, string2 and string3 in an array for inputs numberOfLine = 1", function () {
+  it("should return last line of files elevenAlphabets, oneToFifteen and vowels in an array for inputs numberOfLine = 1", function () {
     let expectedOutput = [];
-    expectedOutput[0] = "Congress called in the coins";
-    expectedOutput[1] = "Congress called in the coins";
-    expectedOutput[2] = string3;
-    assert.deepEqual(extractTailLines([string1, string2, string3], 1), expectedOutput);
+    expectedOutput[0] = "K";
+    expectedOutput[1] = "15";
+    expectedOutput[2] = "u";
+    assert.deepEqual(extractTailLines([elevenAlphabets, oneToFifteen, vowels], 1), expectedOutput);
   });
 
-  it("should return last 2 lines of both files string1 and string2 in an array for inputs numberOfLine = 2", function () {
+  it("should return last 2 lines of both files elevenAlphabets and oneToFifteen in an array for inputs numberOfLine = 2", function () {
     let expectedOutput = [];
-    expectedOutput[0] = "The coins were\nCongress called in the coins";
-    expectedOutput[1] = string2;
-    assert.deepEqual(extractTailLines([string1, string2], 2), expectedOutput);
+    expectedOutput[0] = "J\nK";
+    expectedOutput[1] = "14\n15";
+    assert.deepEqual(extractTailLines([elevenAlphabets, oneToFifteen], 2), expectedOutput);
   });
 });
 
 describe("extractTailCharacters", function () {
-  let string1;
-  let string2;
-  let string3;
+  let file1;
+  let file2;
+  let file3;
   beforeEach('', function () {
-    string1 = "The coins\n"
-    string2 = "The coins were\n"
-    string3 = "Something is something";
+    file1 = "The coins\n"
+    file2 = "The coins were\n"
+    file3 = "Something is something";
   });
 
-  it("should return last character of files string1, string2 and string3 in an array for inputs numberOfBytes = 1", function () {
+  it("should return last character of files file1, file2 and file3 in an array for inputs numberOfBytes = 1", function () {
     let expectedOutput = [];
     expectedOutput[0] = "\n";
     expectedOutput[1] = "\n";
     expectedOutput[2] = "g";
-    assert.deepEqual(extractTailCharacters([string1, string2, string3], 1), expectedOutput);
+    assert.deepEqual(extractTailCharacters([file1, file2, file3], 1), expectedOutput);
   });
 
-  it("should return last 2 characters of both files string1 and string2 in an array for inputs numberOfBytes = 2", function () {
+  it("should return last 2 characters of both files file1 and file2 in an array for inputs numberOfBytes = 2", function () {
     let expectedOutput = [];
     expectedOutput[0] = "s\n";
     expectedOutput[1] = "e\n";
-    assert.deepEqual(extractTailCharacters([string1, string2], 2), expectedOutput);
+    assert.deepEqual(extractTailCharacters([file1, file2], 2), expectedOutput);
   });
 
-  it("should return last 10 characters of both files string1 and string2 with \\n in an array for inputs numberOfBytes = 10", function () {
+  it("should return last 10 characters of both files file1 and file2 with \\n in an array for inputs numberOfBytes = 10", function () {
     let expectedOutput = [];
-    expectedOutput[0] = string1;
+    expectedOutput[0] = file1;
     expectedOutput[1] = "oins were\n";
-    assert.deepEqual(extractTailCharacters([string1, string2], 10), expectedOutput);
+    assert.deepEqual(extractTailCharacters([file1, file2], 10), expectedOutput);
   });
 });
