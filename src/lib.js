@@ -5,10 +5,6 @@ const extractContents = function (numberOfContents, delimeter, file) {
   return contents.slice(0, numberOfContents).join(delimeter);
 };
 
-const applyFunc = function (fnReferance, files) {
-  return files.map(file => fnReferance(file, "utf8"));
-};
-
 const putHeader = function (fileNames, fileContent, length) {
   let contentWithLabel = [];
   if (length < 2) return fileContent;
@@ -39,7 +35,7 @@ const applyCommand = function (reader, inputData, command) {
 
   let option = Object.keys(inputData)[1];
   let files = inputData.files;
-  let fileContents = applyFunc(reader, files);
+  let fileContents = files.map(file => reader(file, "utf8"));
   return commandCall[command][option](fileContents, Math.abs(inputData[option]));
 };
 
@@ -94,7 +90,6 @@ const organizeCommandResult = function (isFileExists, reader, args, command) {
 };
 
 module.exports = {
-  applyFunc,
   extractContents,
   extractHeadLines,
   applyCommand,

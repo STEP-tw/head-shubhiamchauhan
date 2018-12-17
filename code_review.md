@@ -10,7 +10,7 @@
 
 # libTest.js
 
-1. You can pull out some util functions like 
+- [x] 1. You can pull out some util functions like 
     * applyFunc
 2. Poor variable name everywhere like
     *string,list,fileList
