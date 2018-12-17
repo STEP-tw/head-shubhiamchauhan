@@ -67,7 +67,7 @@ describe("extractHeadLines", function () {
   it("should return first 2 lines of both files string1 and string2 in an array for inputs numberOfLine = 2", function () {
     let result = [];
     result[0] = "The coins entered circulation\nAfter legal maneuvering";
-    result[1] = string2;
+    result[1] = "The coins were\nCongress called in the coins";
     assert.deepEqual(extractHeadLines([string1, string2], 2), result);
   });
 });
@@ -75,17 +75,15 @@ describe("extractHeadLines", function () {
 describe("applyCommand", function () {
   let string1;
   let string2;
-  let fileName;
   beforeEach('', function () {
-    fileName = ["string1", "string2"];
     string1 = "string1";
     string2 = "string2";
   });
   describe("for head command", function () {
     it("should return first line of both files string1 and string2 in an array for input.n = 1", function () {
       let result = [];
-      result[0] = string1;
-      result[1] = string2;
+      result[0] = "string1";
+      result[1] = "string2";
       let input = { files: [string1, string2], n: 1 };
       assert.deepEqual(applyCommand(getString, input, "head"), result);
     });
@@ -108,8 +106,8 @@ describe("applyCommand", function () {
 
     it("should return first 8 characters of both files string1 and string2 in an array for input.c = 8", function () {
       let result = [];
-      result[0] = string1 + "\n";
-      result[1] = string2 + "\n";
+      result[0] = "string1" + "\n";
+      result[1] = "string2" + "\n";
       let input = { files: [string1, string2], c: 8 };
       assert.deepEqual(applyCommand(doubleString, input, "head"), result);
     });
@@ -118,16 +116,16 @@ describe("applyCommand", function () {
   describe("for tail command", function () {
     it("should return last line of both files string1 and string2 in an array for input.n = 1", function () {
       let result = [];
-      result[0] = string1;
-      result[1] = string2;
+      result[0] = "string1";
+      result[1] = "string2";
       let input = { files: [string1, string2], n: 1 };
       assert.deepEqual(applyCommand(getString, input, "tail"), result);
     });
 
     it("should return last 2 lines of both files string1 and string2 in an array for input.n = 2", function () {
       let result = [];
-      result[0] = string1 + "\n" + string1;
-      result[1] = string2 + "\n" + string2;
+      result[0] = "string1" + "\n" + "string1";
+      result[1] = "string2" + "\n" + "string2";
       let input = { files: [string1, string2], n: 2 };
       assert.deepEqual(applyCommand(doubleString, input, "tail"), result);
     });
@@ -142,8 +140,8 @@ describe("applyCommand", function () {
 
     it("should return last 8 characters of both files string1 and string2 in an array for input.c = 8", function () {
       let result = [];
-      result[0] = "\n" + string1 ;
-      result[1] = "\n" + string2 ;
+      result[0] = "\n" + "string1" ;
+      result[1] = "\n" + "string2" ;
       let input = { files: [string1, string2], c: 8 };
       assert.deepEqual(applyCommand(doubleString, input, "tail"), result);
     });
@@ -155,8 +153,8 @@ describe("extractHeadCharacters", function () {
   let string2;
   let string3;
   beforeEach('', function () {
-    string1 = "The coins\n"
-    string2 = "The coins were\n"
+    string1 = "The coins\n";
+    string2 = "The coins were\n";
     string3 = "Something is something";
   });
 
@@ -177,7 +175,7 @@ describe("extractHeadCharacters", function () {
 
   it("should return 10 characters of both files string1 and string2 with \\n in an array for inputs numberOfBytes = 10", function () {
     let result = [];
-    result[0] = string1;
+    result[0] = "The coins\n";
     result[1] = "The coins ";
     assert.deepEqual(extractHeadCharacters([string1, string2], 10), result);
   });
@@ -283,12 +281,12 @@ describe("findOptionError", function () {
 
 describe("insertError", function () {
   it("should insert the elements of given entries in an given array", function () {
-    assert.deepEqual(insertError([1, 2], [3, 1]), [1, 3, 2]);
+    assert.deepEqual(insertError([1, 2], ["error", 1]), [1, "error", 2]);
   });
 
   it("should insert error message to given index in an given array", function () {
-    let message = "Error";
-    assert.deepEqual(insertError([1, 2], [message, 1]), [1, message, 2]);
+    let message = "Error has been found";
+    assert.deepEqual(insertError([1, 2], [message, 1]), [1, "Error has been found", 2]);
   });
 });
 
