@@ -2,7 +2,7 @@
 
 - [x] 1. Unnecessary abbreviation
        line : 2
-2. Poor variable name
+- [x] 2. Poor variable name
     line : 7,15,23,...
     * Instead of 'array' you can use a name which will tell us what it is, i.e. input
     * Instead of 'result' --> expectedOutput
