@@ -6,7 +6,7 @@
     line : 7,15,23,...
     * Instead of 'array' you can use a name which will tell us what it is, i.e. input
     * Instead of 'result' --> expectedOutput
-3. Write tests in the order of increasing complexity
+- [x] 3. Write tests in the order of increasing complexity
 
 # libTest.js
 
