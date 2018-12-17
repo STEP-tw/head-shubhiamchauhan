@@ -18,9 +18,9 @@
 - [x] 4. Poor file names for testing , like
     * string1,string2,...
 - [x] 5. Poor testing files for applyCommand
-6. You can add more test cases for findOptionError()
+- [x] 6. You can add more test cases for findOptionError()
     * options like --
-7. You can group your tests
+- [x] 7. You can group your tests
 
 # parseInput.js
 

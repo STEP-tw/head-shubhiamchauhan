@@ -88,6 +88,14 @@ describe("applyCommand", function () {
         let input = { files: [elevenAlphabets, oneToFifteen], n: 2 };
         assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
       });
+
+      it("should return first 10 lines of both files elevenAlphabets and oneToFifteen in an array for input.n = 10", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ";
+        expectedOutput[1] = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
+        let input = { files: [elevenAlphabets, oneToFifteen], n: 10 };
+        assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
+      });
     });
 
     describe("for option c", function () {
@@ -104,6 +112,14 @@ describe("applyCommand", function () {
         expectedOutput[0] = "A\nB\nC\nD\n";
         expectedOutput[1] = "1\n2\n3\n4\n";
         let input = { files: [elevenAlphabets, oneToFifteen], c: 8 };
+        assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
+      });
+
+      it("should return first 10 characters of both files elevenAlphabets and oneToFifteen in an array for input.c = 10", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "A\nB\nC\nD\nE\n";
+        expectedOutput[1] = "1\n2\n3\n4\n5\n";
+        let input = { files: [elevenAlphabets, oneToFifteen], c: 10 };
         assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
       });
     });
@@ -126,6 +142,14 @@ describe("applyCommand", function () {
         let input = { files: [elevenAlphabets, oneToFifteen], n: 2 };
         assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
       });
+
+      it("should return last 10 lines of both files elevenAlphabets and oneToFifteen in an array for input.n = 10", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "B\nC\nD\nE\nF\nG\nH\nI\nJ\nK";
+        expectedOutput[1] = "6\n7\n8\n9\n10\n11\n12\n13\n14\n15";
+        let input = { files: [elevenAlphabets, oneToFifteen], n: 10 };
+        assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
+      });
     });
 
     describe("for option c", function () {
@@ -142,6 +166,14 @@ describe("applyCommand", function () {
         expectedOutput[0] = "DEF\nGHJK";
         expectedOutput[1] = "23456789";
         let input = { files: ["ABCDEF\nGHJK", "123456789"], c: 8 };
+        assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
+      });
+
+      it("should return last 10 characters of both files elevenAlphabets and oneToFifteen in an array for input.c = 10", function () {
+        let expectedOutput = [];
+        expectedOutput[0] = "BCDEF\nGHJK";
+        expectedOutput[1] = "0123456789";
+        let input = { files: ["ABCDEF\nGHJK", "0123456789"], c: 10 };
         assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
       });
     });
