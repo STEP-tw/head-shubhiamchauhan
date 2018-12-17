@@ -32,30 +32,35 @@ describe("extractContents", function () {
 });
 
 describe("extractHeadLines", function () {
-  let file1;
-  let file2;
-  let file3;
+  let elevenAlphabets;
+  let oneToFifteen;
+  let vowels;
   beforeEach('', function () {
-    file1 = "The coins entered circulation\n"
-    file1 += "After legal maneuvering\nthe government\nThe coins were\nCongress called in the coins";
-
-    file2 = "The coins were\nCongress called in the coins";
-    file3 = "The coins entered circulation";
+    elevenAlphabets = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK";
+    oneToFifteen = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15";
+    vowels = "a\ne\ni\no\nu";
   });
 
-  it("should return first lines of files file1, file2 and file3 in an array for inputs numberOfLine = 1", function () {
+  it("should return first lines of files elevenAlphabets, oneToFifteen and vowels in an array for inputs numberOfLine = 1", function () {
     let expectedOutput = [];
-    expectedOutput[0] = "The coins entered circulation";
-    expectedOutput[1] = "The coins were";
-    expectedOutput[2] = "The coins entered circulation";
-    assert.deepEqual(extractHeadLines([file1, file2, file3], 1), expectedOutput);
+    expectedOutput[0] = "A";
+    expectedOutput[1] = "1";
+    expectedOutput[2] = "a";
+    assert.deepEqual(extractHeadLines([elevenAlphabets, oneToFifteen, vowels], 1), expectedOutput);
   });
 
-  it("should return first 2 lines of both files file1 and file2 in an array for inputs numberOfLine = 2", function () {
+  it("should return first 2 lines of both files elevenAlphabets and oneToFifteen in an array for inputs numberOfLine = 2", function () {
     let expectedOutput = [];
-    expectedOutput[0] = "The coins entered circulation\nAfter legal maneuvering";
-    expectedOutput[1] = "The coins were\nCongress called in the coins";
-    assert.deepEqual(extractHeadLines([file1, file2], 2), expectedOutput);
+    expectedOutput[0] = "A\nB";
+    expectedOutput[1] = "1\n2";
+    assert.deepEqual(extractHeadLines([elevenAlphabets, oneToFifteen], 2), expectedOutput);
+  });
+
+  it("should return first 10 lines of both files elevenAlphabets and oneToFifteen in an array for inputs numberOfLine = 10", function () {
+    let expectedOutput = [];
+    expectedOutput[0] = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ";
+    expectedOutput[1] = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
+    assert.deepEqual(extractHeadLines([elevenAlphabets, oneToFifteen], 10), expectedOutput);
   });
 });
 
