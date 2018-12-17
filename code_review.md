@@ -12,7 +12,7 @@
 
 - [x] 1. You can pull out some util functions like 
     * applyFunc
-2. Poor variable name everywhere like
+- [x] 2. Poor variable name everywhere like
     *string,list,fileList
 3. You can use small strings for testing
 4. Poor file names for testing , like
