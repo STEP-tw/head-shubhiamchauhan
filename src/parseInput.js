@@ -12,14 +12,14 @@ const extractUserArgs = function (args) {
     return {
       files: args.slice(1),
       option: firstUserArg[1],
-      count: +firstUserArg.substr(2)
+      count: firstUserArg.substr(2)
     };
   }
 
   if (isFinite(parseInt(firstUserArg[1]))) {
     return { files: args.slice(1), option: "n", count: firstUserArg.substr(1) };
   }
-  return { files: args.slice(2), option: firstUserArg[1], count: +args[1] };
+  return { files: args.slice(2), option: firstUserArg[1], count: args[1] };
 };
 
 exports.extractUserArgs = extractUserArgs;
