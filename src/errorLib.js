@@ -27,22 +27,22 @@ return count < 1 && command == "head";
 }
 
 const findOptionError = function (args, command) {
-  let type = Object.keys(args)[1];
+  let { option, count } = args;
 
-  if (!isValidOption(type)) {
-    return command + ": illegal option -- " + type + "\n" + usage[command];
+  if (!isValidOption(option)) {
+    return command + ": illegal option -- " + option + "\n" + usage[command];
   }
 
-  if (hasNoCount(args[type])) {
-    return command + undefinedArgError + type + "\n" + usage[command];
+  if (hasNoCount(count)) {
+    return command + undefinedArgError + option + "\n" + usage[command];
   }
 
-  if (hasAlphanumericCount(args[type])) {
-    return command + ": illegal " + countError[command][type] + " -- " + args[type];
+  if (hasAlphanumericCount(count)) {
+    return command + ": illegal " + countError[command][option] + " -- " + count;
   }
 
-  if (isHeadCountLessThanOne(args[type], command)) {
-    return "head: illegal " + countError[command][type] + " -- " + args[type];
+  if (isHeadCountLessThanOne(count, command)) {
+    return "head: illegal " + countError[command][option] + " -- " + count;
   }
   return "";
 };

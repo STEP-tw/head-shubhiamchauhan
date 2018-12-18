@@ -1,24 +1,21 @@
 const extractUserOptions = function (args) {
   let option = args[0];
-  let validatedArgs = { files: [] };
   if (!option.startsWith("-")) {
-    return [{ files: [], n: 10 }, args];
+    return [{ files: [], option:"n", count:10 }, args];
   }
 
   if (option[1] == "-") {
-    return [{ files: [], n: 10 }, args.slice(1)];
+    return [{ files: [], option:"n", count: 10 }, args.slice(1)];
   }
 
   if (!isFinite(option.substr(1)) && +option.substr(2)) {
-    validatedArgs[option[1]] = +option.substr(2);
-    return [validatedArgs, args.slice(1)];
+    return [{ files: [], option:option[1], count: +option.substr(2) }, args.slice(1)];
   }
 
   if (isFinite(parseInt(option[1]))) {
-    return [{ files: [], n: option.substr(1) }, args.slice(1)];
+    return [{ files: [], option:"n", count: option.substr(1) }, args.slice(1)];
   }
-  validatedArgs[option[1]] = args[1];
-  return [validatedArgs, args.slice(2)];
+  return [{ files: [], option:option[1], count: +args[1] }, args.slice(2)];
 };
 
 const extractUserArgs = function (args) {

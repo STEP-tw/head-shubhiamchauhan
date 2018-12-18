@@ -33,10 +33,9 @@ const applyCommand = function (reader, inputData, command) {
     tail: { n: extractTailLines, c: extractTailCharacters }
   };
 
-  let option = Object.keys(inputData)[1];
-  let files = inputData.files;
+  let { files, option, count } = inputData;
   let fileContents = files.map(file => reader(file, "utf8"));
-  return commandCall[command][option](fileContents, Math.abs(inputData[option]));
+  return commandCall[command][option](fileContents, Math.abs(count));
 };
 
 const validateFiles = function (type, isFileExists, fileList, validatedFiles, file) {

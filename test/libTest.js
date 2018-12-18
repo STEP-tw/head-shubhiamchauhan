@@ -77,23 +77,23 @@ describe("applyCommand", function () {
         let expectedOutput = [];
         expectedOutput[0] = "A";
         expectedOutput[1] = "1";
-        let input = { files: [elevenAlphabets, oneToFifteen], n: 1 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"n", count: 1 };
         assert.deepEqual(applyCommand(getString, input, "head"), expectedOutput);
       });
 
-      it("should return first 2 lines of both files elevenAlphabets and oneToFifteen in an array for input.n = 2", function () {
+      it("should return first 2 lines of both files elevenAlphabets and oneToFifteen in an array for input.count = 2", function () {
         let expectedOutput = [];
         expectedOutput[0] = "A\nB";
         expectedOutput[1] = "1\n2";
-        let input = { files: [elevenAlphabets, oneToFifteen], n: 2 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"n", count: 2 };
         assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
       });
 
-      it("should return first 10 lines of both files elevenAlphabets and oneToFifteen in an array for input.n = 10", function () {
+      it("should return first 10 lines of both files elevenAlphabets and oneToFifteen in an array for input.count = 10", function () {
         let expectedOutput = [];
         expectedOutput[0] = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ";
         expectedOutput[1] = "1\n2\n3\n4\n5\n6\n7\n8\n9\n10";
-        let input = { files: [elevenAlphabets, oneToFifteen], n: 10 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"n", count: 10 };
         assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
       });
     });
@@ -103,7 +103,7 @@ describe("applyCommand", function () {
         let expectedOutput = [];
         expectedOutput[0] = "A";
         expectedOutput[1] = "1";
-        let input = { files: [elevenAlphabets, oneToFifteen], c: 1 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"c", count: 1 };
         assert.deepEqual(applyCommand(getString, input, "head"), expectedOutput);
       });
 
@@ -111,7 +111,7 @@ describe("applyCommand", function () {
         let expectedOutput = [];
         expectedOutput[0] = "A\nB\nC\nD\n";
         expectedOutput[1] = "1\n2\n3\n4\n";
-        let input = { files: [elevenAlphabets, oneToFifteen], c: 8 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"c", count: 8 };
         assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
       });
 
@@ -119,7 +119,7 @@ describe("applyCommand", function () {
         let expectedOutput = [];
         expectedOutput[0] = "A\nB\nC\nD\nE\n";
         expectedOutput[1] = "1\n2\n3\n4\n5\n";
-        let input = { files: [elevenAlphabets, oneToFifteen], c: 10 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"c", count: 10 };
         assert.deepEqual(applyCommand(doubleString, input, "head"), expectedOutput);
       });
     });
@@ -127,27 +127,27 @@ describe("applyCommand", function () {
 
   describe("for tail command", function () {
     describe("for option n", function () {
-      it("should return last line of both files elevenAlphabets and oneToFifteen in an array for input.n = 1", function () {
+      it("should return last line of both files elevenAlphabets and oneToFifteen in an array for input.count = 1", function () {
         let expectedOutput = [];
         expectedOutput[0] = "K";
         expectedOutput[1] = "15";
-        let input = { files: [elevenAlphabets, oneToFifteen], n: 1 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"n", count: 1 };
         assert.deepEqual(applyCommand(getString, input, "tail"), expectedOutput);
       });
 
-      it("should return last 2 lines of both files elevenAlphabets and oneToFifteen in an array for input.n = 2", function () {
+      it("should return last 2 lines of both files elevenAlphabets and oneToFifteen in an array for input.count = 2", function () {
         let expectedOutput = [];
         expectedOutput[0] = "J\nK";
         expectedOutput[1] = "14\n15";
-        let input = { files: [elevenAlphabets, oneToFifteen], n: 2 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"n", count: 2 };
         assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
       });
 
-      it("should return last 10 lines of both files elevenAlphabets and oneToFifteen in an array for input.n = 10", function () {
+      it("should return last 10 lines of both files elevenAlphabets and oneToFifteen in an array for input.count = 10", function () {
         let expectedOutput = [];
         expectedOutput[0] = "B\nC\nD\nE\nF\nG\nH\nI\nJ\nK";
         expectedOutput[1] = "6\n7\n8\n9\n10\n11\n12\n13\n14\n15";
-        let input = { files: [elevenAlphabets, oneToFifteen], n: 10 };
+        let input = { files: [elevenAlphabets, oneToFifteen], option:"n", count: 10 };
         assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
       });
     });
@@ -157,7 +157,7 @@ describe("applyCommand", function () {
         let expectedOutput = [];
         expectedOutput[0] = "E";
         expectedOutput[1] = "5";
-        let input = { files: ["ABCDE", "12345"], c: 1 };
+        let input = { files: ["ABCDE", "12345"], option:"c", count: 1 };
         assert.deepEqual(applyCommand(getString, input, "tail"), expectedOutput);
       });
 
@@ -165,7 +165,7 @@ describe("applyCommand", function () {
         let expectedOutput = [];
         expectedOutput[0] = "DEF\nGHJK";
         expectedOutput[1] = "23456789";
-        let input = { files: ["ABCDEF\nGHJK", "123456789"], c: 8 };
+        let input = { files: ["ABCDEF\nGHJK", "123456789"], option:"c", count: 8 };
         assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
       });
 
@@ -173,7 +173,7 @@ describe("applyCommand", function () {
         let expectedOutput = [];
         expectedOutput[0] = "BCDEF\nGHJK";
         expectedOutput[1] = "0123456789";
-        let input = { files: ["ABCDEF\nGHJK", "0123456789"], c: 10 };
+        let input = { files: ["ABCDEF\nGHJK", "0123456789"], option:"c", count: 10 };
         assert.deepEqual(applyCommand(doubleString, input, "tail"), expectedOutput);
       });
     });
@@ -216,67 +216,67 @@ describe("extractHeadCharacters", function () {
 describe("findOptionError", function () {
   describe("for head command", function () {
     it("should throw an error for invalid option", function () {
-      let input = { files: ["file1", "file2"], v: 10 };
+      let input = { files: ["file1", "file2"], option:"v", count:10 };
       let expectedOutput = "head: illegal option -- v\nusage: head [-n lines | -c bytes] [file ...]";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw an error for invalid option", function () {
-      let input = { files: ["file1", "file2"], "-": 10 };
+      let input = { files: ["file1", "file2"], option:"-", count: 10 };
       let expectedOutput = "head: illegal option -- -\nusage: head [-n lines | -c bytes] [file ...]";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw a line count error for line count -n0", function () {
-      let input = { files: ["file1", "file2"], "n": 0 };
+      let input = { files: ["file1", "file2"], option:"n", count: 0 };
       let expectedOutput = "head: illegal line count -- 0";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw a byte count error for byte count -c0", function () {
-      let input = { files: ["file1", "file2"], "c": 0 };
+      let input = { files: ["file1", "file2"], option:"c", count: 0 };
       let expectedOutput = "head: illegal byte count -- 0";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw a line count error for count -0", function () {
-      let input = { files: ["file1", "file2"], "n": 0 };
+      let input = { files: ["file1", "file2"], option:"n", count: 0 };
       let expectedOutput = "head: illegal line count -- 0";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw a line count error for option having -n and an alphanumeric count", function () {
-      let input = { files: ["file1", "file2"], "n": "5r" };
+      let input = { files: ["file1", "file2"], option:"n", count: "5r" };
       let expectedOutput = "head: illegal line count -- 5r";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw a byte count error for option having -c and an alphanumeric count", function () {
-      let input = { files: ["file1", "file2"], "c": "6g" };
+      let input = { files: ["file1", "file2"], option:"c", count: "6g" };
       let expectedOutput = "head: illegal byte count -- 6g";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw a line count error for option having - and an alphanumeric count", function () {
-      let input = { files: ["file1", "file2"], "n": "7n" };
+      let input = { files: ["file1", "file2"], option:"n", count: "7n" };
       let expectedOutput = "head: illegal line count -- 7n";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw a line count error for option having -n and undefined count", function () {
-      let input = { files: ["file1", "file2"], "n": undefined };
+      let input = { files: ["file1", "file2"], option:"n", count: undefined };
       let expectedOutput = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should throw a byte count error for option having -c and undefined count", function () {
-      let input = { files: ["file1", "file2"], "c": undefined };
+      let input = { files: ["file1", "file2"], option:"c", count: undefined };
       let expectedOutput = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
 
     it("should return an empty string for valid counts and option", function () {
-      let input = { files: ["file1", "file2"], "c": 10 };
+      let input = { files: ["file1", "file2"], option:"c", count: 10 };
       let expectedOutput = "";
       assert.deepEqual(findOptionError(input, "head"), expectedOutput);
     });
@@ -284,27 +284,27 @@ describe("findOptionError", function () {
 
   describe("for tail command", function () {
     it("should throw an error for invalid option", function () {
-      let input = { files: ["file1", "file2"], v: 10 };
+      let input = { files: ["file1", "file2"], option:"v", count: 10 };
       let expectedOutput = "tail: illegal option -- v\n"
       expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
       assert.deepEqual(findOptionError(input, "tail"), expectedOutput);
     });
 
     it("should throw an error for invalid option", function () {
-      let input = { files: ["file1", "file2"], "-": 10 };
+      let input = { files: ["file1", "file2"], option:"-", count: 10 };
       let expectedOutput = "tail: illegal option -- -\n";
       expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
       assert.deepEqual(findOptionError(input, "tail"), expectedOutput);
     });
 
     it("should throw an offset error for option having -n and an alphanumeric count", function () {
-      let input = { files: ["file1", "file2"], "n": "5r" };
+      let input = { files: ["file1", "file2"], option:"n", count: "5r" };
       let expectedOutput = "tail: illegal offset -- 5r";
       assert.deepEqual(findOptionError(input, "tail"), expectedOutput);
     });
 
     it("should throw an offset error for option having -c and an alphanumeric count", function () {
-      let input = { files: ["file1", "file2"], "c": "6g" };
+      let input = { files: ["file1", "file2"], option:"c", count: "6g" };
       let expectedOutput = "tail: illegal offset -- 6g";
       assert.deepEqual(findOptionError(input, "tail"), expectedOutput);
     });
@@ -358,30 +358,30 @@ describe("validateFiles", function () {
 describe("organizeCommandResult", function () {
   describe("for head command", function () {
     it("should return the given file first 5 characters for input getTrue, getString and args.c=5", function () {
-      let args = { files: ["prefix"], c: 5 };
+      let args = { files: ["prefix"], option:"c", count: 5 };
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), "prefi");
     });
 
     it("should return every file first line for input getTrue, getString and args.n = 1", function () {
-      let args = { files: ["prefix", "suffix"], n: 1 };
+      let args = { files: ["prefix", "suffix"], option:"n", count: 1 };
       let expectedOutput = "==> prefix <==\nprefix\n==> suffix <==\nsuffix"
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), expectedOutput);
     });
 
     it("should throw no arguments error for option having -n and undefined count", function () {
-      let args = { files: ["file1", "file2"], "n": undefined };
+      let args = { files: ["file1", "file2"], option:"n", count: undefined };
       let expectedOutput = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), expectedOutput);
     });
 
     it("should throw no arguments error for option having -c and undefined count", function () {
-      let args = { files: ["file1", "file2"], "c": undefined };
+      let args = { files: ["file1", "file2"], option:"c", count: undefined };
       let expectedOutput = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "head"), expectedOutput);
     });
 
     it("should throw error for arg.files having missing file", function () {
-      let args = { files: ["prefix"], c: 5 };
+      let args = { files: ["prefix"], option:"c", count: 5 };
       let expectedOutput = "head: prefix: No such file or directory";
       assert.deepEqual(organizeCommandResult(getFalse, getString, args, "head"), expectedOutput);
     });
@@ -389,31 +389,31 @@ describe("organizeCommandResult", function () {
 
   describe("for tail command", function () {
     it("should return the given file last 5 characters for input getTrue, getString and args.c=5", function () {
-      let args = { files: ["prefix"], c: 5 };
+      let args = { files: ["prefix"], option:"c", count: 5 };
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "tail"), "refix");
     });
 
     it("should return every file last line for input getTrue, getString and args.n = 1", function () {
-      let args = { files: ["prefix", "suffix"], n: 1 };
+      let args = { files: ["prefix", "suffix"], option:"n", count: 1 };
       let expectedOutput = "==> prefix <==\nprefix\n==> suffix <==\nsuffix"
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "tail"), expectedOutput);
     });
 
     it("should throw error for arg.files having missing file", function () {
-      let args = { files: ["prefix"], c: 5 };
+      let args = { files: ["prefix"], option:"c", count: 5 };
       let expectedOutput = "tail: prefix: No such file or directory";
       assert.deepEqual(organizeCommandResult(getFalse, getString, args, "tail"), expectedOutput);
     });
 
     it("should throw no arguments error for option having -n and undefined count", function () {
-      let args = { files: ["file1", "file2"], "n": undefined };
+      let args = { files: ["file1", "file2"], option:"n", count: undefined };
       let expectedOutput = "tail: option requires an argument -- n\n";
       expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "tail"), expectedOutput);
     });
 
     it("should throw no arguments error for option having -c and undefined count", function () {
-      let args = { files: ["file1", "file2"], "c": undefined };
+      let args = { files: ["file1", "file2"], option:"c", count: undefined };
       let expectedOutput = "tail: option requires an argument -- c\n";
       expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
       assert.deepEqual(organizeCommandResult(getTrue, getString, args, "tail"), expectedOutput);
