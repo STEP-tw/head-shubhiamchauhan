@@ -8,14 +8,13 @@ const getOption = function (option, args, validatedFiles) {
 
 const extractUserOptions = function (args) {
   let option = args[0];
-  let validatedFiles = [{ files: [] }];
 
   if (option == "--") {
     return [{ files: [], n: 10 }, args.slice(1)];
   }
 
   if (option[0] == "-" && !isFinite(option.substr(1))) {
-    return getOption(option, args, validatedFiles);
+    return getOption(option, args, [{ files: [] }]);
   }
 
   if (option[0] == "-" && isFinite(parseInt(option[1]))) {
