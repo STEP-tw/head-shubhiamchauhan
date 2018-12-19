@@ -10,8 +10,8 @@ const usage = {
 
 const undefinedArgError = ": option requires an argument -- ";
 
-const isValidOption = function (optionType) {
-  return ["n", "c"].includes(optionType);
+const isNotValidOption = function (optionType) {
+  return !["n", "c"].includes(optionType);
 }
 
 const hasNoCount = function(count){
@@ -29,7 +29,7 @@ return count < 1 && command == "head";
 const findOptionError = function (args, command) {
   let { option, count } = args;
 
-  if (!isValidOption(option)) {
+  if (isNotValidOption(option)) {
     return command + ": illegal option -- " + option + "\n" + usage[command];
   }
 
