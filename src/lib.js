@@ -71,17 +71,18 @@ const extractTailCharacters = function (listOfFileContents, numberOfBytes) {
   });
 };
 
-const organizeCommandOutput = function (args, command, isFileExists, reader) {
+const organizeCommandOutput = function (args, command, fs) {
+  const { existsSync, readFileSync } = fs;
   if (findOptionError(args, command)) {
     return findOptionError(args, command);
   }
 
   let validatedFiles = { actualFile: [], error: [] };
-  let getValidatedFiles = validateFiles.bind(null, command, isFileExists, args["files"]);
+  let getValidatedFiles = validateFiles.bind(null, command, existsSync, args["files"]);
   validatedFiles = args["files"].reduce(getValidatedFiles, validatedFiles);
   args["files"] = validatedFiles["actualFile"];
 
-  let existingFile = applyCommand(reader, args, command);
+  let existingFile = applyCommand(readFileSync, args, command);
   let length = existingFile.length + validatedFiles["error"].length;
   existingFile = putHeader(validatedFiles["actualFile"], existingFile, length);
 
