@@ -71,7 +71,7 @@ const extractTailCharacters = function (listOfFileContents, numberOfBytes) {
   });
 };
 
-const organizeCommandResult = function (args, command, isFileExists, reader) {
+const organizeCommandOutput = function (args, command, isFileExists, reader) {
   if (findOptionError(args, command)) {
     return findOptionError(args, command);
   }
@@ -99,5 +99,5 @@ module.exports = {
   validateFiles,
   extractTailLines,
   extractTailCharacters,
-  organizeCommandResult
+  organizeCommandOutput
 };
