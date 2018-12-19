@@ -71,7 +71,7 @@ const extractTailCharacters = function (listOfFileContents, numberOfBytes) {
   });
 };
 
-const organizeCommandResult = function (isFileExists, reader, args, command) {
+const organizeCommandResult = function (args, command, isFileExists, reader) {
   if (findOptionError(args, command)) {
     return findOptionError(args, command);
   }

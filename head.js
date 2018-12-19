@@ -4,7 +4,7 @@ const { extractUserArgs } = require('./src/parseInput.js');
 
 const main = function() {
   let args = extractUserArgs(process.argv.slice(2));
-  console.log(organizeCommandResult(existsSync, readFileSync, args, "head"));
+  console.log(organizeCommandResult(args, "head", existsSync, readFileSync));
 }
 
 main();
