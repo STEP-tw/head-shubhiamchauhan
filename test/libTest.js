@@ -11,10 +11,6 @@ let {
   extractTailLines,
   extractTailCharacters } = require('../src/lib.js');
 
-const getString = function (string) {
-  return string;
-};
-
 const mockReader = function(expectedFiles) {
   return function(actualPath) {
     return expectedFiles[actualPath];
@@ -261,67 +257,74 @@ describe("validateFiles", function () {
 });
 
 describe("organizeCommandResult", function () {
+  let files = {};
+  let reader;
+  beforeEach('', function () {
+    files["bigAlphabets"] = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK";
+    files["smallAlphabets"] = "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk";
+    reader = mockReader(files);
+  });
   describe("for head command", function () {
-    it("should return the given file first 5 characters for input getTrue, getString and args.c=5", function () {
-      let args = { files: ["prefix"], option:"c", count: 5 };
-      assert.deepEqual(organizeCommandResult( args, "head", getTrue, getString), "prefi");
+    it("should return the given file first 5 characters for input getTrue, reader and args.c=5", function () {
+      let args = { files: ["bigAlphabets"], option:"c", count: 5 };
+      assert.deepEqual(organizeCommandResult( args, "head", getTrue, reader), "A\nB\nC");
     });
 
-    it("should return every file first line for input getTrue, getString and args.n = 1", function () {
-      let args = { files: ["prefix", "suffix"], option:"n", count: 1 };
-      let expectedOutput = "==> prefix <==\nprefix\n==> suffix <==\nsuffix"
-      assert.deepEqual(organizeCommandResult( args, "head", getTrue, getString), expectedOutput);
+    it("should return every file first line for input getTrue, reader and args.n = 1", function () {
+      let args = { files: ["bigAlphabets", "smallAlphabets"], option:"n", count: 1 };
+      let expectedOutput = "==> bigAlphabets <==\nA\n==> smallAlphabets <==\na"
+      assert.deepEqual(organizeCommandResult( args, "head", getTrue, reader), expectedOutput);
     });
 
     it("should throw no arguments error for option having -n and undefined count", function () {
-      let args = { files: ["file1", "file2"], option:"n", count: undefined };
+      let args = { files: ["bigAlphabets", "smallAlphabets"], option:"n", count: undefined };
       let expectedOutput = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
-      assert.deepEqual(organizeCommandResult( args, "head", getTrue, getString), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "head", getTrue, reader), expectedOutput);
     });
 
     it("should throw no arguments error for option having -c and undefined count", function () {
-      let args = { files: ["file1", "file2"], option:"c", count: undefined };
+      let args = { files: ["bigAlphabets", "smallAlphabets"], option:"c", count: undefined };
       let expectedOutput = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
-      assert.deepEqual(organizeCommandResult( args, "head", getTrue, getString), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "head", getTrue, reader), expectedOutput);
     });
 
     it("should throw error for arg.files having missing file", function () {
-      let args = { files: ["prefix"], option:"c", count: 5 };
-      let expectedOutput = "head: prefix: No such file or directory";
-      assert.deepEqual(organizeCommandResult(args, "head", getFalse, getString), expectedOutput);
+      let args = { files: ["bigAlphabets"], option:"c", count: 5 };
+      let expectedOutput = "head: bigAlphabets: No such file or directory";
+      assert.deepEqual(organizeCommandResult(args, "head", getFalse, reader), expectedOutput);
     });
   });
 
   describe("for tail command", function () {
-    it("should return the given file last 5 characters for input getTrue, getString and args.c=5", function () {
-      let args = { files: ["prefix"], option:"c", count: 5 };
-      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, getString), "refix");
+    it("should return the given file last 5 characters for input getTrue, reader and args.c=5", function () {
+      let args = { files: ["bigAlphabets"], option:"c", count: 5 };
+      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, reader), "I\nJ\nK");
     });
 
-    it("should return every file last line for input getTrue, getString and args.n = 1", function () {
-      let args = { files: ["prefix", "suffix"], option:"n", count: 1 };
-      let expectedOutput = "==> prefix <==\nprefix\n==> suffix <==\nsuffix"
-      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, getString), expectedOutput);
+    it("should return every file last line for input getTrue, reader and args.n = 1", function () {
+      let args = { files: ["bigAlphabets", "smallAlphabets"], option:"n", count: 1 };
+      let expectedOutput = "==> bigAlphabets <==\nK\n==> smallAlphabets <==\nk"
+      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, reader), expectedOutput);
     });
 
     it("should throw error for arg.files having missing file", function () {
-      let args = { files: ["prefix"], option:"c", count: 5 };
-      let expectedOutput = "tail: prefix: No such file or directory";
-      assert.deepEqual(organizeCommandResult( args, "tail", getFalse, getString), expectedOutput);
+      let args = { files: ["bigAlphabets"], option:"c", count: 5 };
+      let expectedOutput = "tail: bigAlphabets: No such file or directory";
+      assert.deepEqual(organizeCommandResult( args, "tail", getFalse, reader), expectedOutput);
     });
 
     it("should throw no arguments error for option having -n and undefined count", function () {
-      let args = { files: ["file1", "file2"], option:"n", count: undefined };
+      let args = { files: ["bigAlphabets", "smallAlphabets"], option:"n", count: undefined };
       let expectedOutput = "tail: option requires an argument -- n\n";
       expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
-      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, getString), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, reader), expectedOutput);
     });
 
     it("should throw no arguments error for option having -c and undefined count", function () {
-      let args = { files: ["file1", "file2"], option:"c", count: undefined };
+      let args = { files: ["bigAlphabets", "smallAlphabets"], option:"c", count: undefined };
       let expectedOutput = "tail: option requires an argument -- c\n";
       expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
-      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, getString), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, reader), expectedOutput);
     });
   });
 });
