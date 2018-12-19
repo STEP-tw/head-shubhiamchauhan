@@ -23,16 +23,13 @@ const mockReader = function(expectedFiles) {
 
 const getTrue = (x) => true;
 const getFalse = (x) => false;
-const doubleString = function (string) {
-  return string + "\n" + string;
-}
 
 describe("extractContents", function () {
-  it("should return \'\' for inputs 0, \"\" and \"shubham\"", function () {
-    assert.deepEqual(extractContents(0, "", "shubham"), "");
+  it("should return \'\' for inputs 0, \"\" and \"something\"", function () {
+    assert.deepEqual(extractContents(0, "", "something"), "");
   });
-  it("should return \'shu\' for inputs 3, \"\" and \"shubham\"", function () {
-    assert.deepEqual(extractContents(3, "", "shubham"), "shu");
+  it("should return \'som\' for inputs 3, \"\" and \"something\"", function () {
+    assert.deepEqual(extractContents(3, "", "something"), "som");
   });
 });
 
