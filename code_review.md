@@ -30,10 +30,10 @@
 
 # lib.js
 
-1. Tricky function name
+- [x] 1. Tricky function name
     * organizeCommandResult()
-2. Order of arguments in organizeCommandResult()
-3. Poor variable names like 
+- [x] 2. Order of arguments in organizeCommandResult()
+- [x] 3. Poor variable names like 
     * commandCall (line :35)
     * files (lines : 39)
 4. You can simply get rid of the for loop

@@ -28,14 +28,14 @@ const extractHeadCharacters = function (listOfFileContents, numberOfBytes) {
 };
 
 const applyCommand = function (reader, inputData, command) {
-  let commandCall = {
+  let functionCalls = {
     head: { n: extractHeadLines, c: extractHeadCharacters },
     tail: { n: extractTailLines, c: extractTailCharacters }
   };
 
   let { files, option, count } = inputData;
   let fileContents = files.map(file => reader(file, "utf8"));
-  return commandCall[command][option](fileContents, Math.abs(count));
+  return functionCalls[command][option](fileContents, Math.abs(count));
 };
 
 const validateFiles = function (type, isFileExists, fileList, validatedFiles, file) {
