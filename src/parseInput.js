@@ -1,5 +1,5 @@
 const hasCountAndOption = function( args ) {
-  return !isFinite(args.substr(1)) && +args.substr(2);
+  return !isFinite(args.substr(1)) && isFinite(parseInt(args.substr(2)));
 }
 
 const hasNoOption = function( args ) {
