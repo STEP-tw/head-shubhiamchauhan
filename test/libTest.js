@@ -274,7 +274,7 @@ describe("organizeCommandResult", function () {
     files["bigAlphabets"] = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK";
     files["smallAlphabets"] = "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk";
     reader = mockReader(files);
-    existsSync = mockValidator({ "bigAlphabets": true, "smallAlphabets":true });
+    existsSync = mockValidator(files);
   });
   describe("for head command", function () {
     it("should return the given file first 5 characters for input existsSync, reader and args.c=5", function () {
