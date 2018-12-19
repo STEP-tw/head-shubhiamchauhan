@@ -17,8 +17,14 @@ const mockReader = function(expectedFiles) {
   };
 };
 
-const getTrue = (x) => true;
-const getFalse = (x) => false;
+const mockValidator = function(expectedFiles) {
+  return function(actualPath) {
+    if (expectedFiles[actualPath]) {
+      return true;
+    }
+    return false;
+  };
+};
 
 describe("extractContents", function () {
   it("should return \'\' for inputs 0, \"\" and \"something\"", function () {
@@ -240,91 +246,97 @@ describe("putHeader", function () {
 });
 
 describe("validateFiles", function () {
+  let nameOfFiles;
+  let existsSync;
+  beforeEach('', function () {
+    nameOfFiles = ["file1", "file2"];
+    existsSync = mockValidator({ "file1": true, "file2": false});
+  });
   it("should return an object with keys actualFile holding files and error holding an empty array", function () {
     let validatedFiles = { actualFile: [], error: [] };
-    let files = ["file1", "file2"];
     let expectedOutput = { actualFile: ["file1"], error: [] };
-    assert.deepEqual(validateFiles("head", getTrue, files, validatedFiles, "file1"), expectedOutput);
+    assert.deepEqual(validateFiles("head", existsSync, nameOfFiles, validatedFiles, "file1"), expectedOutput);
   });
 
   it("should return an object with keys actualFile holding [] and error holding [error message, indexOfFile]", function () {
     let validatedFiles = { actualFile: [], error: [] };
-    let files = ["file1", "file2"];
     let message = "head: file2: No such file or directory";
     let expectedOutput = { actualFile: [], error: [[message, 1]] };
-    assert.deepEqual(validateFiles("head", getFalse, files, validatedFiles, "file2"), expectedOutput);
+    assert.deepEqual(validateFiles("head", existsSync, nameOfFiles, validatedFiles, "file2"), expectedOutput);
   });
 });
 
 describe("organizeCommandResult", function () {
   let files = {};
   let reader;
+  let existsSync;
   beforeEach('', function () {
     files["bigAlphabets"] = "A\nB\nC\nD\nE\nF\nG\nH\nI\nJ\nK";
     files["smallAlphabets"] = "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk";
     reader = mockReader(files);
+    existsSync = mockValidator({ "bigAlphabets": true, "smallAlphabets":true });
   });
   describe("for head command", function () {
-    it("should return the given file first 5 characters for input getTrue, reader and args.c=5", function () {
+    it("should return the given file first 5 characters for input existsSync, reader and args.c=5", function () {
       let args = { files: ["bigAlphabets"], option:"c", count: 5 };
-      assert.deepEqual(organizeCommandResult( args, "head", getTrue, reader), "A\nB\nC");
+      assert.deepEqual(organizeCommandResult( args, "head", existsSync, reader), "A\nB\nC");
     });
 
-    it("should return every file first line for input getTrue, reader and args.n = 1", function () {
+    it("should return every file first line for input existsSync, reader and args.n = 1", function () {
       let args = { files: ["bigAlphabets", "smallAlphabets"], option:"n", count: 1 };
       let expectedOutput = "==> bigAlphabets <==\nA\n==> smallAlphabets <==\na"
-      assert.deepEqual(organizeCommandResult( args, "head", getTrue, reader), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "head", existsSync, reader), expectedOutput);
     });
 
     it("should throw no arguments error for option having -n and undefined count", function () {
       let args = { files: ["bigAlphabets", "smallAlphabets"], option:"n", count: undefined };
       let expectedOutput = "head: option requires an argument -- n\nusage: head [-n lines | -c bytes] [file ...]";
-      assert.deepEqual(organizeCommandResult( args, "head", getTrue, reader), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "head", existsSync, reader), expectedOutput);
     });
 
     it("should throw no arguments error for option having -c and undefined count", function () {
       let args = { files: ["bigAlphabets", "smallAlphabets"], option:"c", count: undefined };
       let expectedOutput = "head: option requires an argument -- c\nusage: head [-n lines | -c bytes] [file ...]";
-      assert.deepEqual(organizeCommandResult( args, "head", getTrue, reader), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "head", existsSync, reader), expectedOutput);
     });
 
     it("should throw error for arg.files having missing file", function () {
-      let args = { files: ["bigAlphabets"], option:"c", count: 5 };
-      let expectedOutput = "head: bigAlphabets: No such file or directory";
-      assert.deepEqual(organizeCommandResult(args, "head", getFalse, reader), expectedOutput);
+      let args = { files: ["numbers"], option:"c", count: 5 };
+      let expectedOutput = "head: numbers: No such file or directory";
+      assert.deepEqual(organizeCommandResult(args, "head", existsSync, reader), expectedOutput);
     });
   });
 
   describe("for tail command", function () {
-    it("should return the given file last 5 characters for input getTrue, reader and args.c=5", function () {
+    it("should return the given file last 5 characters for input existsSync, reader and args.c=5", function () {
       let args = { files: ["bigAlphabets"], option:"c", count: 5 };
-      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, reader), "I\nJ\nK");
+      assert.deepEqual(organizeCommandResult( args, "tail", existsSync, reader), "I\nJ\nK");
     });
 
-    it("should return every file last line for input getTrue, reader and args.n = 1", function () {
+    it("should return every file last line for input existsSync, reader and args.n = 1", function () {
       let args = { files: ["bigAlphabets", "smallAlphabets"], option:"n", count: 1 };
       let expectedOutput = "==> bigAlphabets <==\nK\n==> smallAlphabets <==\nk"
-      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, reader), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "tail", existsSync, reader), expectedOutput);
     });
 
     it("should throw error for arg.files having missing file", function () {
-      let args = { files: ["bigAlphabets"], option:"c", count: 5 };
-      let expectedOutput = "tail: bigAlphabets: No such file or directory";
-      assert.deepEqual(organizeCommandResult( args, "tail", getFalse, reader), expectedOutput);
+      let args = { files: ["numbers"], option:"c", count: 5 };
+      let expectedOutput = "tail: numbers: No such file or directory";
+      assert.deepEqual(organizeCommandResult( args, "tail", existsSync, reader), expectedOutput);
     });
 
     it("should throw no arguments error for option having -n and undefined count", function () {
       let args = { files: ["bigAlphabets", "smallAlphabets"], option:"n", count: undefined };
       let expectedOutput = "tail: option requires an argument -- n\n";
       expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
-      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, reader), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "tail", existsSync, reader), expectedOutput);
     });
 
     it("should throw no arguments error for option having -c and undefined count", function () {
       let args = { files: ["bigAlphabets", "smallAlphabets"], option:"c", count: undefined };
       let expectedOutput = "tail: option requires an argument -- c\n";
       expectedOutput += "usage: tail [-F | -f | -r] [-q] [-b # | -c # | -n #] [file ...]";
-      assert.deepEqual(organizeCommandResult( args, "tail", getTrue, reader), expectedOutput);
+      assert.deepEqual(organizeCommandResult( args, "tail", existsSync, reader), expectedOutput);
     });
   });
 });
