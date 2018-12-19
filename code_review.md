@@ -26,7 +26,7 @@
 
 - [x] 1. Poor variable names
     * argsList
-2. You can pull out if conditions to util functions.
+- [x] 2. You can pull out if conditions to util functions.
 
 # lib.js
 
